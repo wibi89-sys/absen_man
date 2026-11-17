@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\DB;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+if (! file_exists(__DIR__.'/../vendor/autoload.php')) {
+    echo "<div style='font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:30px;max-width:850px;margin:auto;background:#0f172a;color:#f8fafc;border-radius:20px;margin-top:20px;'>";
+    echo "<h2 style='color:#ef4444;'>❌ Folder vendor/ Belum Ditemukan!</h2>";
+    echo "<p style='color:#94a3b8;'>File <code>vendor/autoload.php</code> tidak ditemukan di server. Pastikan Anda mengunggah folder vendor dari proyek <b>absen_man</b> (Madrasah One), bukan dari proyek lain.</p>";
+    echo "<p style='color:#cbd5e1;'>File ZIP siap upload: <b>vendor-absen-man.zip</b></p>";
+    echo "</div>";
+    exit;
+}
+
 require __DIR__.'/../vendor/autoload.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
