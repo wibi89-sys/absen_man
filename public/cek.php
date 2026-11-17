@@ -113,6 +113,34 @@ header('Content-Type: text/html; charset=utf-8');
         exit;
     }
 
+    // 1. Bersihkan file cache bootstrap lama jika masih tersisa
+    foreach (['packages.php', 'services.php', 'config.php', 'routes-v7.php'] as $cacheFile) {
+        $target = __DIR__.'/../bootstrap/cache/'.$cacheFile;
+        if (file_exists($target)) {
+            $content = @file_get_contents($target);
+            if ($content && (str_contains($content, 'Boost') || str_contains($content, 'Pail') || str_contains($content, 'Pao'))) {
+                @unlink($target);
+            }
+        }
+    }
+
+    // 2. Bersihkan referensi dev provider (Boost, Pail, Pao) dari installed.json jika ada
+    $installedJsonPath = __DIR__.'/../vendor/composer/installed.json';
+    if (file_exists($installedJsonPath)) {
+        $installedContent = @file_get_contents($installedJsonPath);
+        if ($installedContent && str_contains($installedContent, 'BoostServiceProvider')) {
+            $installedData = json_decode($installedContent, true);
+            if (isset($installedData['packages']) && is_array($installedData['packages'])) {
+                $installedData['packages'] = array_values(array_filter($installedData['packages'], function ($pkg) {
+                    return ! in_array($pkg['name'] ?? '', [
+                        'laravel/boost', 'laravel/mcp', 'laravel/pail', 'laravel/pao', 'laravel/agent-detector', 'laravel/roster',
+                    ]);
+                }));
+                @file_put_contents($installedJsonPath, json_encode($installedData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            }
+        }
+    }
+
 // Inisialisasi Framework Laravel dengan Exception Handling Penuh
 $appLoaded = false;
 $kernel = null;
