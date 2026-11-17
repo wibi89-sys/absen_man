@@ -28,6 +28,11 @@ if (! file_exists($bootstrapPath)) {
 require __DIR__.'/../vendor/autoload.php';
 $app = require_once $bootstrapPath;
 $kernel = $app->make(Kernel::class);
+try {
+    $kernel->bootstrap();
+} catch (\Throwable $e) {
+    //
+}
 
 $logs = [];
 $action = $_POST['action'] ?? null;
@@ -125,9 +130,9 @@ if ($action === 'run_full_setup') {
             <strong style="font-size:13px;color:#f8fafc;">Status Lingkungan Server:</strong>
             <div class="env-info">
                 <div>PHP Version: <span style="color:#38bdf8;font-weight:bold;"><?= PHP_VERSION ?></span></div>
-                <div>Database Driver: <span style="color:#38bdf8;font-weight:bold;"><?= config('database.default') ?></span></div>
-                <div>Database Name: <span style="color:#38bdf8;font-weight:bold;"><?= config('database.connections.'.config('database.default').'.database') ?></span></div>
-                <div>APP_KEY: <span style="color:<?= config('app.key') ? '#4ade80' : '#fb7185' ?>;font-weight:bold;"><?= config('app.key') ? 'Terkonfigurasi' : 'Belum Ada' ?></span></div>
+                <div>Database Driver: <span style="color:#38bdf8;font-weight:bold;"><?= function_exists('config') && app()->bound('config') ? config('database.default', 'mysql') : 'mysql' ?></span></div>
+                <div>Database Name: <span style="color:#38bdf8;font-weight:bold;"><?= function_exists('config') && app()->bound('config') ? config('database.connections.'.config('database.default').'.database', '-') : '-' ?></span></div>
+                <div>APP_KEY: <span style="color:<?= (function_exists('config') && app()->bound('config') && config('app.key')) ? '#4ade80' : '#fb7185' ?>;font-weight:bold;"><?= (function_exists('config') && app()->bound('config') && config('app.key')) ? 'Terkonfigurasi' : 'Belum Ada' ?></span></div>
             </div>
         </div>
 
