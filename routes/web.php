@@ -19,6 +19,7 @@ use App\Http\Controllers\MasterData\SchoolLocationController;
 use App\Http\Controllers\MasterData\StudentController;
 use App\Http\Controllers\MasterData\TeacherController;
 use App\Http\Controllers\Parent\ParentPortalController;
+use App\Http\Controllers\Setting\SchoolSettingController;
 use App\Http\Controllers\Worship\WorshipExemptionController;
 use App\Http\Controllers\Worship\WorshipRecapController;
 use App\Http\Controllers\Worship\WorshipSessionController;
@@ -40,6 +41,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Modul Pengaturan Madrasah (Super Admin, Admin, Kepsek)
+    Route::middleware('role:super_admin,admin,kepsek')->prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [SchoolSettingController::class, 'index'])->name('index');
+        Route::put('/', [SchoolSettingController::class, 'update'])->name('update');
+    });
 
     // Master Data Routes (Admin, Super Admin, Kepsek, Waka)
     Route::middleware('role:super_admin,admin,kepsek,waka')->prefix('master')->name('master.')->group(function () {

@@ -57,7 +57,7 @@
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-600">
+            <table class="w-full min-w-[700px] text-left text-xs text-slate-600">
                 <thead class="bg-slate-100/70 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
                     <tr>
                         <th class="py-3 px-4">Rombel / Kelas</th>
