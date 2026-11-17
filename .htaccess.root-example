@@ -1,0 +1,19 @@
+# ==============================================================================
+# Root .htaccess (Hanya digunakan jika aplikasi ditaruh langsung di public_html)
+# Jika Document Root hosting Anda sudah bisa diarahkan ke folder /public,
+# Anda TIDAK PERLU menggunakan file ini.
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Blok akses langsung ke file sensitif di root
+    RewriteRule ^\.env - [F,L,NC]
+    RewriteRule ^composer\.(json|lock) - [F,L,NC]
+    RewriteRule ^package(-lock)?\.json - [F,L,NC]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests)/ - [F,L,NC]
+
+    # Arahkan semua request publik ke subfolder /public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

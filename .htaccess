@@ -1,0 +1,31 @@
+# ==============================================================================
+# Madrasah One - Root .htaccess for Shared Hosting (cPanel / Apache)
+# ==============================================================================
+# Gunakan file ini jika DocumentRoot cPanel diarahkan ke root folder (public_html)
+# dan tidak dapat langsung diarahkan ke subfolder /public/.
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Lindungi file & folder sensitif dari akses HTTP langsung
+    RewriteRule ^(\.env|\.git|composer\.(json|lock)|package(-lock)?\.json|artisan|storage/.*|bootstrap/cache/.*|database/.*|app/.*|resources/.*)$ - [F,L,NC]
+
+    # 2. Arahkan semua request publik ke folder /public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Blokir pembacaan file tersembunyi (.env, .git, dll)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Nonaktifkan directory browsing
+Options -Indexes

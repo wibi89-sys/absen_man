@@ -1,0 +1,87 @@
+# ==============================================================================
+# Nginx Configuration Template for MADRASAH ONE (Laravel 11/12/13)
+# Lokasi file di VPS: /etc/nginx/sites-available/madrasah-one.conf
+# ==============================================================================
+
+# 1. HTTP -> Redirect otomatis ke HTTPS
+server {
+    listen 80;
+    listen [::]:80;
+    server_name madrasah-anda.sch.id www.madrasah-anda.sch.id;
+
+    # Let's Encrypt ACME Challenge
+    location /.well-known/acme-challenge/ {
+        root /var/www/madrasah-one/public;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# 2. HTTPS Server Block
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name madrasah-anda.sch.id www.madrasah-anda.sch.id;
+
+    # Document Root mengarah langsung ke folder /public
+    root /var/www/madrasah-one/public;
+    index index.php index.html;
+
+    # Sertifikat SSL (Dibuat otomatis oleh certbot --nginx)
+    ssl_certificate /etc/letsencrypt/live/madrasah-anda.sch.id/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/madrasah-anda.sch.id/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    # Batas ukuran upload foto profil & file import Excel/CSV
+    client_max_body_size 64M;
+
+    # Header Keamanan
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # Log Akses & Error
+    access_log /var/log/nginx/madrasah-one_access.log;
+    error_log /var/log/nginx/madrasah-one_error.log error;
+
+    charset utf-8;
+
+    # Routing Laravel
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Blok akses langsung ke file tersembunyi (.env, .git, dll)
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+
+    # PHP-FPM FastCGI Handler (Sesuaikan versi PHP: php8.4-fpm atau php8.3-fpm)
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+        # fastcgi_pass unix:/var/run/php/php8.3-fpm.sock; # Jika menggunakan PHP 8.3
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_hide_header X-Powered-By;
+        fastcgi_read_timeout 300;
+    }
+
+    # Cache Aset Statis (CSS, JS, Fonts, Gambar)
+    location ~* \.(ico|css|js|gif|jpeg|jpg|png|woff|woff2|ttf|svg|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, no-transform";
+        access_log off;
+    }
+
+    # Endpoint Push Data Mesin LAN ADMS (Solution X100C / ZKTeco)
+    location ~ ^/(api/machine/cdata|iclock/cdata) {
+        try_files $uri $uri/ /index.php?$query_string;
+        client_body_buffer_size 128k;
+    }
+}
