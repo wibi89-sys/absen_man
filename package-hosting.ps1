@@ -33,7 +33,7 @@ New-Item -ItemType Directory -Path $tempDir | Out-Null
 Write-Host "`n[3/4] Menyalin file proyek produksi (mengecualikan node_modules, .git, dll)..." -ForegroundColor Yellow
 
 # Salin direktori utama
-$excludeDirs = @("node_modules", ".git", "tests", "temp_package_madrasah_one")
+$excludeDirs = @("node_modules", ".git", "tests", "temp_package_madrasah_one", ".env")
 Get-ChildItem -Path . -Exclude $excludeDirs | ForEach-Object {
     Copy-Item -Path $_.FullName -Destination $tempDir -Recurse -Force
 }
