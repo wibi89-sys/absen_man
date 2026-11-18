@@ -119,43 +119,70 @@
             </div>
         </div>
 
-        <!-- Right: Status Roadmap Modul -->
+        <!-- Right: Pusat Operasional & Akses Cepat -->
         <div class="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <h3 class="font-bold text-slate-900 text-sm sm:text-base mb-3">Status Modul Sistem</h3>
-            <p class="text-xs text-slate-500 mb-4">Pengembangan aplikasi secara bertahap sesuai instruksi Master Spec Antigravity.</p>
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold text-slate-900 text-sm sm:text-base">Pusat Akses Operasional</h3>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Semua Modul Aktif</span>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">Pintasan cepat untuk memantau presensi, ibadah, kesiswaan, dan pelaporan resmi madrasah.</p>
 
-            <div class="space-y-3">
-                <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
-                    <div>
-                        <div class="font-bold text-xs text-emerald-900">Fase 1: Fondasi & Master Data</div>
-                        <div class="text-[10px] text-emerald-700">Autentikasi, RBAC 11 Role, CRUD Master</div>
+            <div class="space-y-2.5">
+                <a href="{{ route('attendance.index') }}" 
+                   class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 flex items-center justify-between transition group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-slate-900 group-hover:text-emerald-900">Jurnal Presensi & Kiosk Gerbang</div>
+                            <div class="text-[10px] text-slate-500">Rekapitulasi kehadiran, scan kartu, dan alert WA ortu</div>
+                        </div>
                     </div>
-                    <span class="px-2 py-1 rounded-md bg-emerald-600 text-white font-bold text-[10px]">Aktif</span>
-                </div>
+                    <span class="text-slate-400 group-hover:text-emerald-600 text-xs">&rarr;</span>
+                </a>
 
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                    <div>
-                        <div class="font-bold text-xs text-slate-800">Fase 2: Absensi Sekolah</div>
-                        <div class="text-[10px] text-slate-500">Pencatatan Gerbang, Keterlambatan, Koreksi</div>
+                <a href="{{ route('worship.sessions.index') }}" 
+                   class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 flex items-center justify-between transition group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-slate-900 group-hover:text-emerald-900">Monitoring Ibadah Terpadu</div>
+                            <div class="text-[10px] text-slate-500">Salat Zuhur gelombang, Asar, dan QR proyektor</div>
+                        </div>
                     </div>
-                    <span class="px-2 py-1 rounded-md bg-slate-200 text-slate-700 font-medium text-[10px]">Berikutnya</span>
-                </div>
+                    <span class="text-slate-400 group-hover:text-emerald-600 text-xs">&rarr;</span>
+                </a>
 
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                    <div>
-                        <div class="font-bold text-xs text-slate-800">Fase 3: Monitoring Ibadah</div>
-                        <div class="text-[10px] text-slate-500">Zuhur Gelombang, Asar, QR Dinamis</div>
+                <a href="{{ route('attendance.recap') }}" 
+                   class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 flex items-center justify-between transition group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-slate-900 group-hover:text-emerald-900">Laporan Resmi & Cetak Kop</div>
+                            <div class="text-[10px] text-slate-500">Cetak dokumen berkop resmi & ekspor data Excel/CSV</div>
+                        </div>
                     </div>
-                    <span class="px-2 py-1 rounded-md bg-slate-200 text-slate-700 font-medium text-[10px]">Terjadwal</span>
-                </div>
+                    <span class="text-slate-400 group-hover:text-emerald-600 text-xs">&rarr;</span>
+                </a>
 
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                    <div>
-                        <div class="font-bold text-xs text-slate-800">Fase 4: Portal Orang Tua</div>
-                        <div class="text-[10px] text-slate-500">Verifikasi Relasi, Informasi Terverifikasi</div>
+                <a href="{{ route('settings.index') }}" 
+                   class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 flex items-center justify-between transition group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-slate-900 group-hover:text-emerald-900">Pengaturan Identitas & Logo</div>
+                            <div class="text-[10px] text-slate-500">Kelola identitas madrasah, kepala sekolah, dan NIP</div>
+                        </div>
                     </div>
-                    <span class="px-2 py-1 rounded-md bg-slate-200 text-slate-700 font-medium text-[10px]">Terjadwal</span>
-                </div>
+                    <span class="text-slate-400 group-hover:text-emerald-600 text-xs">&rarr;</span>
+                </a>
             </div>
         </div>
     </div>
