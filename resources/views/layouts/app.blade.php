@@ -113,6 +113,14 @@
                         <svg class="w-4 h-4 mr-3 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
                         Mesin Absensi LAN
                     </a>
+
+                    @if(auth()->user()?->hasAnyRole(['super_admin', 'admin']))
+                    <a href="{{ route('master.users.index') }}" 
+                       class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('master.users.*') ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800/60' }}">
+                        <svg class="w-4 h-4 mr-3 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        Manajemen Pengguna
+                    </a>
+                    @endif
                 </div>
                 @endif
 
@@ -284,15 +292,15 @@
 
             <!-- User Footer in Sidebar -->
             <div class="p-4 bg-emerald-950 border-t border-emerald-800/60 flex items-center justify-between">
-                <div class="flex items-center space-x-3 overflow-hidden">
-                    <div class="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center font-bold text-xs text-white">
+                <a href="{{ route('profile.show') }}" class="flex items-center space-x-3 overflow-hidden hover:opacity-85 transition group" title="Lihat Profil & Keamanan">
+                    <div class="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center font-bold text-xs text-white group-hover:ring-2 group-hover:ring-emerald-400 transition">
                         {{ strtoupper(substr(auth()->user()?->name ?? 'User', 0, 2)) }}
                     </div>
                     <div class="truncate">
-                        <div class="text-xs font-semibold text-white truncate">{{ auth()->user()?->name ?? 'Pengguna' }}</div>
+                        <div class="text-xs font-semibold text-white truncate group-hover:text-emerald-300 transition">{{ auth()->user()?->name ?? 'Pengguna' }}</div>
                         <div class="text-[10px] text-emerald-300 capitalize">{{ auth()->user()?->roles?->first()?->display_name ?? 'Pengguna' }}</div>
                     </div>
-                </div>
+                </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" title="Keluar" class="text-emerald-300 hover:text-white p-1.5 rounded-lg hover:bg-emerald-900 transition">
@@ -321,9 +329,14 @@
                     <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
                         {{ auth()->user()?->roles?->first()?->display_name ?? 'Pengguna' }}
                     </span>
-                    <div class="text-xs text-slate-500 hidden sm:block">
-                        {{ now()->isoFormat('dddd, D MMMM Y') }}
-                    </div>
+                    <a href="{{ route('profile.show') }}" 
+                       class="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 hover:text-emerald-700 hover:bg-slate-100 transition border border-transparent hover:border-slate-200"
+                       title="Profil & Keamanan Akun">
+                        <div class="w-6 h-6 rounded-full bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center">
+                            {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 2)) }}
+                        </div>
+                        <span class="hidden md:inline truncate max-w-[120px]">{{ auth()->user()?->name }}</span>
+                    </a>
                 </div>
             </header>
 

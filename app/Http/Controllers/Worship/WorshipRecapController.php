@@ -96,6 +96,65 @@ class WorshipRecapController extends Controller
     }
 
     /**
+     * Display printable view for worship attendance recap.
+     */
+    public function print(Request $request): View
+    {
+        $startDate = $request->input('start_date', now()->startOfMonth()->toDateString());
+        $endDate = $request->input('end_date', now()->toDateString());
+        $classId = $request->input('class_id');
+        $worshipTypeId = $request->input('worship_type_id');
+
+        $classes = SchoolClass::where('is_active', true)->orderBy('grade_id')->orderBy('name')->get();
+        $selectedClass = $classId ? $classes->firstWhere('id', $classId) : null;
+        $worshipTypes = WorshipType::all();
+        $selectedType = $worshipTypeId ? $worshipTypes->firstWhere('id', $worshipTypeId) : null;
+
+        $sessionQuery = WorshipSession::whereBetween('date', [$startDate, $endDate])
+            ->whereIn('status', ['in_progress', 'completed', 'verified']);
+
+        if ($worshipTypeId) {
+            $sessionQuery->where('worship_type_id', $worshipTypeId);
+        }
+
+        $sessionIds = $sessionQuery->pluck('id');
+        $totalSessions = $sessionIds->count();
+
+        $studentsQuery = Student::with('currentClass')->whereIn('status', ['active', 'aktif']);
+        if ($classId) {
+            $studentsQuery->where('current_class_id', $classId);
+        }
+        $students = $studentsQuery->orderBy('full_name')->get();
+
+        $attendanceStats = WorshipSessionParticipant::whereIn('worship_session_id', $sessionIds)
+            ->whereIn('student_id', $students->pluck('id'))
+            ->selectRaw('student_id,
+                COUNT(*) as total_registered,
+                SUM(CASE WHEN status = "present" THEN 1 ELSE 0 END) as count_present,
+                SUM(CASE WHEN status = "late" THEN 1 ELSE 0 END) as count_late,
+                SUM(CASE WHEN status = "absent" THEN 1 ELSE 0 END) as count_absent,
+                SUM(CASE WHEN status = "excused" THEN 1 ELSE 0 END) as count_excused,
+                SUM(CASE WHEN status = "exempt" THEN 1 ELSE 0 END) as count_exempt')
+            ->groupBy('student_id')
+            ->get()
+            ->keyBy('student_id');
+
+        return view('worship.recap.print', compact(
+            'classes',
+            'selectedClass',
+            'worshipTypes',
+            'selectedType',
+            'students',
+            'attendanceStats',
+            'startDate',
+            'endDate',
+            'classId',
+            'worshipTypeId',
+            'totalSessions'
+        ));
+    }
+
+    /**
      * Export worship recap to CSV.
      */
     public function export(Request $request): StreamedResponse

@@ -8,11 +8,11 @@
     <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 rounded-3xl p-6 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-2">
-                Gerbang Masuk Madrasah &bull; Multi-Metode Scanner
+                {{ $schoolSetting->school_name }} &bull; Pos Gerbang Kiosk
             </span>
             <h1 class="text-2xl font-extrabold tracking-tight">Kiosk Scanner Presensi Masuk Siswa</h1>
             <p class="text-emerald-100 text-xs sm:text-sm mt-1">
-                Mendukung QR Kartu OSIS, Barcode Reader, dan Tap Kartu Pelajar NFC/RFID.
+                {{ $schoolSetting->gate_welcome_text ?? 'Mendukung QR Kartu OSIS, Barcode Reader, dan Tap Kartu Pelajar NFC/RFID.' }}
             </p>
         </div>
 

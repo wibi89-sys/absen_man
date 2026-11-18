@@ -8,6 +8,7 @@ use App\Models\AttendanceMachine;
 use App\Models\AttendanceSession;
 use App\Models\AttendanceType;
 use App\Models\Student;
+use App\Models\User;
 use App\Services\Attendance\GateAttendanceService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -143,7 +144,7 @@ class AttendanceMachineController extends Controller
                     session: $session,
                     source: 'machine_lan',
                     deviceInfo: 'Mesin Biometrik Solution X100C LAN',
-                    userId: 1
+                    userId: User::where('username', 'admin')->value('id') ?? User::first()?->id
                 );
                 $processedCount++;
             }

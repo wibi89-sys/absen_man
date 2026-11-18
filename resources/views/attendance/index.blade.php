@@ -147,9 +147,25 @@
                             <div class="text-[10px] text-slate-400 uppercase tracking-wider">{{ str_replace('_', ' ', $att->source) }}</div>
                         </td>
                         <td class="py-3 px-4 text-right">
-                            <button @click="openCorrection = true" class="text-xs font-semibold text-emerald-600 hover:text-emerald-800">
-                                Koreksi
-                            </button>
+                            <div class="flex items-center justify-end space-x-2">
+                                @if(in_array($att->status, ['late', 'absent']))
+                                    @php
+                                        $parentContact = $att->student->getPrimaryParentContact();
+                                        $waText = "Assalamu'alaikum Wr. Wb. Yth. Bapak/Ibu Wali dari {$att->student->full_name} ({$att->student->currentClass?->name}). Kami dari " . ($schoolSetting->school_name ?? 'Madrasah') . " menginformasikan bahwa ananda tercatat " . strtoupper($att->status_label) . ($att->minutes_late > 0 ? " ({$att->minutes_late} menit)" : "") . " pada presensi hari ini (" . Carbon\Carbon::parse($att->date)->isoFormat('dddd, D MMMM Y') . "). Mohon konfirmasi atau perhatian Bapak/Ibu demi kelancaran belajar ananda. Terima kasih.";
+                                    @endphp
+                                    @if($parentContact)
+                                        <a href="https://wa.me/{{ $parentContact['phone'] }}?text={{ rawurlencode($waText) }}" target="_blank" rel="noopener noreferrer"
+                                           class="inline-flex items-center px-2 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-semibold border border-emerald-200 transition"
+                                           title="Kirim Notifikasi WhatsApp ke {{ $parentContact['name'] }}">
+                                            <svg class="w-3.5 h-3.5 mr-1 text-emerald-600" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                                            WA Ortu
+                                        </a>
+                                    @endif
+                                @endif
+                                <button @click="openCorrection = true" class="text-xs font-semibold text-emerald-600 hover:text-emerald-800">
+                                    Koreksi
+                                </button>
+                            </div>
 
                             <!-- Modal Koreksi -->
                             <div x-show="openCorrection" class="fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-4" style="display: none;">

@@ -18,7 +18,9 @@ use App\Http\Controllers\MasterData\SchoolClassController;
 use App\Http\Controllers\MasterData\SchoolLocationController;
 use App\Http\Controllers\MasterData\StudentController;
 use App\Http\Controllers\MasterData\TeacherController;
+use App\Http\Controllers\MasterData\UserController;
 use App\Http\Controllers\Parent\ParentPortalController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Setting\SchoolSettingController;
 use App\Http\Controllers\Worship\WorshipExemptionController;
 use App\Http\Controllers\Worship\WorshipRecapController;
@@ -42,6 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Profil & Keamanan Akun Pengguna
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
     // Modul Pengaturan Madrasah (Super Admin, Admin, Kepsek)
     Route::middleware('role:super_admin,admin,kepsek')->prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SchoolSettingController::class, 'index'])->name('index');
@@ -50,6 +57,12 @@ Route::middleware('auth')->group(function () {
 
     // Master Data Routes (Admin, Super Admin, Kepsek, Waka)
     Route::middleware('role:super_admin,admin,kepsek,waka')->prefix('master')->name('master.')->group(function () {
+        // Manajemen Akun & Pengguna
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+        Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+        Route::post('users/{user}/update-roles', [UserController::class, 'updateRoles'])->name('users.update-roles');
+
         Route::resource('students', StudentController::class)->except(['show']);
         Route::resource('teachers', TeacherController::class)->except(['show']);
         Route::resource('classes', SchoolClassController::class)->except(['show']);
@@ -92,6 +105,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/batch', [DailyAttendanceController::class, 'storeBatch'])->name('store-batch');
             Route::post('/{dailyAttendance}/correct', [DailyAttendanceController::class, 'correct'])->name('correct');
             Route::get('/recap', [DailyAttendanceController::class, 'recap'])->name('recap');
+            Route::get('/recap/print', [DailyAttendanceController::class, 'printRecap'])->name('recap.print');
+            Route::get('/recap/export', [DailyAttendanceController::class, 'exportCsv'])->name('recap.export');
 
             // Pos Gerbang & TV QR Dinamis
             Route::get('/gate-scanner', [GateAttendanceController::class, 'gateScanner'])->name('gate-scanner');
@@ -124,6 +139,7 @@ Route::middleware('auth')->group(function () {
             // Recap & Export
             Route::get('/recap', [WorshipRecapController::class, 'index'])->name('recap.index');
             Route::get('/recap/export', [WorshipRecapController::class, 'export'])->name('recap.export');
+            Route::get('/recap/print', [WorshipRecapController::class, 'print'])->name('recap.print');
         });
 
         // Student / Officer Scanner & Process Scan

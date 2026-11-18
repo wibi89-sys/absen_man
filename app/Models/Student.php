@@ -95,4 +95,31 @@ class Student extends Model
     {
         return $this->hasMany(WorshipExemption::class);
     }
+
+    /**
+     * Get the primary or first verified parent contact for WhatsApp notifications.
+     *
+     * @return array{name: string, phone: string, relationship: string}|null
+     */
+    public function getPrimaryParentContact(): ?array
+    {
+        $parent = $this->parents()->wherePivot('is_primary_contact', true)->first()
+            ?? $this->verifiedParents()->first()
+            ?? $this->parents()->first();
+
+        if (! $parent || ! $parent->phone) {
+            return null;
+        }
+
+        $phone = preg_replace('/[^0-9]/', '', (string) $parent->phone);
+        if (str_starts_with($phone, '0')) {
+            $phone = '62'.substr($phone, 1);
+        }
+
+        return [
+            'name' => $parent->full_name,
+            'phone' => $phone,
+            'relationship' => $parent->relationship_type ?? 'Orang Tua / Wali',
+        ];
+    }
 }

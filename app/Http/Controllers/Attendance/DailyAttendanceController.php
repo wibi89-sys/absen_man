@@ -16,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DailyAttendanceController extends Controller
 {
@@ -251,13 +252,100 @@ class DailyAttendanceController extends Controller
     {
         $startDate = $request->input('start_date', Carbon::today()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->input('end_date', Carbon::today()->format('Y-m-d'));
-        $classId = $request->input('class_id');
+        $classId = $request->input('class_id') ? (int) $request->input('class_id') : null;
 
-        $classes = SchoolClass::where('is_active', true)->orderBy('name')->get();
+        $data = $this->buildRecapData($startDate, $endDate, $classId);
 
-        // Agregasi statistik per kelas
-        $classRecaps = [];
+        return view('attendance.recap', $data);
+    }
+
+    /**
+     * Tampilan Cetak Resmi Rekapitulasi Kehadiran (Print Document).
+     */
+    public function printRecap(Request $request): View
+    {
+        $startDate = $request->input('start_date', Carbon::today()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::today()->format('Y-m-d'));
+        $classId = $request->input('class_id') ? (int) $request->input('class_id') : null;
+
+        $data = $this->buildRecapData($startDate, $endDate, $classId);
+
+        return view('attendance.print-recap', $data);
+    }
+
+    /**
+     * Ekspor Rekapitulasi Kehadiran ke CSV (Excel Compatible).
+     */
+    public function exportCsv(Request $request): StreamedResponse
+    {
+        $startDate = $request->input('start_date', Carbon::today()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::today()->format('Y-m-d'));
+        $classId = $request->input('class_id') ? (int) $request->input('class_id') : null;
+
+        $data = $this->buildRecapData($startDate, $endDate, $classId);
+        $filename = "rekap_presensi_{$startDate}_sampai_{$endDate}.csv";
+
+        return response()->streamDownload(function () use ($data) {
+            $handle = fopen('php://output', 'w');
+            // Write UTF-8 BOM so Excel opens indonesian characters and numbers cleanly
+            fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            if ($data['selectedClass']) {
+                fputcsv($handle, ['No', 'NIS', 'Nama Siswa', 'Kelas', 'Jenis Kelamin', 'Hadir', 'Terlambat', 'Sakit', 'Izin', 'Alpa', 'Total Presensi', 'Persentase (%)']);
+                $no = 1;
+                foreach ($data['studentRecaps'] as $row) {
+                    fputcsv($handle, [
+                        $no++,
+                        $row['student']->nis,
+                        $row['student']->full_name,
+                        $data['selectedClass']->name,
+                        $row['student']->gender === 'L' ? 'Laki-laki' : 'Perempuan',
+                        $row['present'],
+                        $row['late'],
+                        $row['sick'],
+                        $row['excused'],
+                        $row['absent'],
+                        $row['total'],
+                        $row['rate'].'%',
+                    ]);
+                }
+            } else {
+                fputcsv($handle, ['No', 'Nama Rombel / Kelas', 'Wali Kelas', 'Jumlah Siswa', 'Total Catatan', 'Hadir', 'Terlambat', 'Sakit', 'Izin', 'Alpa', 'Tingkat Kehadiran (%)']);
+                $no = 1;
+                foreach ($data['classRecaps'] as $row) {
+                    fputcsv($handle, [
+                        $no++,
+                        $row['class']->name,
+                        $row['class']->homeroomTeacher?->full_name ?? '-',
+                        $row['total_students'],
+                        $row['total_records'],
+                        $row['present'],
+                        $row['late'],
+                        $row['sick'],
+                        $row['excused'],
+                        $row['absent'],
+                        $row['rate'].'%',
+                    ]);
+                }
+            }
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Helper agregasi data rekapitulasi presensi.
+     *
+     * @return array<string, mixed>
+     */
+    private function buildRecapData(string $startDate, string $endDate, ?int $classId): array
+    {
+        $classes = SchoolClass::where('is_active', true)->with('homeroomTeacher')->orderBy('name')->get();
         $queryClasses = $classId ? $classes->where('id', $classId) : $classes;
+        $classRecaps = [];
 
         foreach ($queryClasses as $c) {
             $studentIds = $c->students()->pluck('id');
@@ -291,6 +379,51 @@ class DailyAttendanceController extends Controller
             ];
         }
 
-        return view('attendance.recap', compact('classes', 'classRecaps', 'startDate', 'endDate', 'classId'));
+        $studentRecaps = [];
+        $selectedClass = $classId ? $classes->firstWhere('id', $classId) : null;
+
+        if ($selectedClass) {
+            $classStudents = $selectedClass->students()
+                ->whereIn('status', ['active', 'aktif'])
+                ->orderBy('full_name')
+                ->get();
+
+            $studentAttendances = DailyAttendance::whereIn('student_id', $classStudents->pluck('id'))
+                ->whereBetween('date', [$startDate, $endDate])
+                ->get()
+                ->groupBy('student_id');
+
+            foreach ($classStudents as $st) {
+                $atts = $studentAttendances->get($st->id, collect());
+                $p = $atts->where('status', 'present')->count();
+                $l = $atts->where('status', 'late')->count();
+                $s = $atts->where('status', 'sick')->count();
+                $e = $atts->where('status', 'excused')->count();
+                $a = $atts->where('status', 'absent')->count();
+                $total = $atts->count();
+                $rate = $total > 0 ? round((($p + $l) / $total) * 100, 1) : 0;
+
+                $studentRecaps[] = [
+                    'student' => $st,
+                    'present' => $p,
+                    'late' => $l,
+                    'sick' => $s,
+                    'excused' => $e,
+                    'absent' => $a,
+                    'total' => $total,
+                    'rate' => $rate,
+                ];
+            }
+        }
+
+        return [
+            'classes' => $classes,
+            'selectedClass' => $selectedClass,
+            'classRecaps' => $classRecaps,
+            'studentRecaps' => $studentRecaps,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'classId' => $classId,
+        ];
     }
 }

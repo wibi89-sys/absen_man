@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $session->type?->name }} - Layar QR Proyektor | Madrasah One</title>
+    <title>{{ $session->type?->name }} - Layar QR Proyektor | {{ $schoolSetting->school_name }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-950 text-white min-h-screen flex flex-col font-sans antialiased overflow-x-hidden selection:bg-emerald-500 selection:text-white">
@@ -12,9 +12,13 @@
     <!-- Top Navigation / Presenter Controls -->
     <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
         <div class="flex items-center space-x-4">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-500/20">
-                M1
-            </div>
+            @if($schoolSetting->logo_url)
+                <img src="{{ $schoolSetting->logo_url }}" alt="Logo" class="w-10 h-10 object-contain rounded-xl bg-white p-1">
+            @else
+                <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-500/20">
+                    {{ $schoolSetting->initials }}
+                </div>
+            @endif
             <div>
                 <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
                     <span>{{ $session->type?->name }}</span>
@@ -23,7 +27,7 @@
                     </span>
                 </h1>
                 <p class="text-xs text-slate-400">
-                    {{ $session->location?->name ?? 'Masjid Utama' }} &bull; {{ $session->date->isoFormat('dddd, D MMMM Y') }}
+                    {{ $schoolSetting->school_name }} &bull; {{ $session->location?->name ?? 'Masjid Utama' }} &bull; {{ $session->date->isoFormat('dddd, D MMMM Y') }}
                 </p>
             </div>
         </div>
