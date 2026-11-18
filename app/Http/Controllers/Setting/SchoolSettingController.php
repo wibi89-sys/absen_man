@@ -8,6 +8,7 @@ use App\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -18,6 +19,7 @@ class SchoolSettingController extends Controller
      */
     public function index(): View
     {
+        SchoolSetting::ensureTableExists();
         $setting = SchoolSetting::current();
 
         return view('setting.index', compact('setting'));
@@ -51,43 +53,62 @@ class SchoolSettingController extends Controller
             'logo.max' => 'Ukuran file logo maksimal 2MB.',
         ]);
 
-        $setting = SchoolSetting::current();
+        try {
+            SchoolSetting::ensureTableExists();
+            $setting = SchoolSetting::current();
 
-        // Handle Logo Upload
-        if ($request->hasFile('logo')) {
-            if ($setting->logo_path && Storage::disk('public')->exists($setting->logo_path)) {
-                Storage::disk('public')->delete($setting->logo_path);
+            // Handle Logo Upload
+            if ($request->hasFile('logo')) {
+                try {
+                    if ($setting->logo_path && Storage::disk('public')->exists($setting->logo_path)) {
+                        Storage::disk('public')->delete($setting->logo_path);
+                    }
+                    $logoPath = $request->file('logo')->store('settings', 'public');
+                    $validated['logo_path'] = $logoPath;
+                } catch (\Throwable $fileEx) {
+                    Log::warning('Logo upload failed: '.$fileEx->getMessage());
+                }
             }
-            $logoPath = $request->file('logo')->store('settings', 'public');
-            $validated['logo_path'] = $logoPath;
-        }
 
-        // Handle Delete Logo Request
-        if ($request->boolean('delete_logo') && $setting->logo_path) {
-            if (Storage::disk('public')->exists($setting->logo_path)) {
-                Storage::disk('public')->delete($setting->logo_path);
+            // Handle Delete Logo Request
+            if ($request->boolean('delete_logo') && $setting->logo_path) {
+                try {
+                    if (Storage::disk('public')->exists($setting->logo_path)) {
+                        Storage::disk('public')->delete($setting->logo_path);
+                    }
+                } catch (\Throwable) {
+                    // Ignore storage issue on delete
+                }
+                $validated['logo_path'] = null;
             }
-            $validated['logo_path'] = null;
+
+            $validated['enable_demo_mode'] = $request->boolean('enable_demo_mode');
+
+            unset($validated['logo'], $validated['delete_logo']);
+
+            $setting = SchoolSetting::updateOrCreate(['id' => 1], $validated);
+            Cache::forget('school_setting');
+
+            try {
+                AuditService::log(
+                    event: 'update_school_settings',
+                    auditableType: SchoolSetting::class,
+                    auditableId: $setting->id,
+                    newValues: [
+                        'school_name' => $setting->school_name,
+                        'principal_name' => $setting->principal_name,
+                        'enable_demo_mode' => $setting->enable_demo_mode,
+                    ]
+                );
+            } catch (\Throwable $auditEx) {
+                Log::warning('AuditService log failed: '.$auditEx->getMessage());
+            }
+
+            return redirect()->route('settings.index')->with('success', 'Profil dan identitas madrasah berhasil diperbarui.');
+        } catch (\Throwable $e) {
+            Log::error('SchoolSettingController update failed: '.$e->getMessage());
+
+            return redirect()->route('settings.index')->withErrors(['error' => 'Gagal memperbarui pengaturan: '.$e->getMessage()]);
         }
-
-        $validated['enable_demo_mode'] = $request->boolean('enable_demo_mode');
-
-        unset($validated['logo']);
-
-        $setting->update($validated);
-        Cache::forget('school_setting');
-
-        AuditService::log(
-            event: 'update_school_settings',
-            auditableType: SchoolSetting::class,
-            auditableId: $setting->id,
-            newValues: [
-                'school_name' => $setting->school_name,
-                'principal_name' => $setting->principal_name,
-                'enable_demo_mode' => $setting->enable_demo_mode,
-            ]
-        );
-
-        return redirect()->route('settings.index')->with('success', 'Profil dan identitas madrasah berhasil diperbarui.');
     }
 }

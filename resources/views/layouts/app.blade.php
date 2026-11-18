@@ -68,7 +68,7 @@
                     Dashboard
                 </a>
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Master Data</div>
                     
@@ -116,7 +116,7 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru_piket', 'wali_kelas']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru_piket', 'wali_kelas']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Absensi Sekolah</div>
                     
@@ -146,11 +146,11 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru', 'siswa']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru', 'siswa']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Monitoring Ibadah</div>
                     
-                    @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru']))
+                    @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru']))
                     <a href="{{ route('worship.sessions.index') }}" 
                        class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('worship.sessions.*') ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800/60' }}">
                         <svg class="w-4 h-4 mr-3 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -158,7 +158,7 @@
                     </a>
                     @endif
 
-                    @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'petugas_keagamaan', 'guru_bk']))
+                    @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'petugas_keagamaan', 'guru_bk']))
                     <a href="{{ route('worship.exemptions.index') }}" 
                        class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('worship.exemptions.*') ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800/60' }}">
                         <svg class="w-4 h-4 mr-3 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -166,7 +166,7 @@
                     </a>
                     @endif
 
-                    @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru']))
+                    @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru']))
                     <a href="{{ route('worship.recap.index') }}" 
                        class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('worship.recap.*') ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800/60' }}">
                         <svg class="w-4 h-4 mr-3 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -176,7 +176,7 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasRole('orang_tua'))
+                @if(auth()->user()?->hasRole('orang_tua'))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Portal Orang Tua</div>
                     
@@ -200,19 +200,19 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'wali_kelas']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'wali_kelas']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Komunikasi</div>
                     
                     <a href="{{ route('communication.announcements.index') }}" 
                        class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('communication.announcements.*') ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800/60' }}">
                         <svg class="w-4 h-4 mr-3 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
-                        Pengumuman
+                        Pengumumkan
                     </a>
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru', 'wali_kelas']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru', 'wali_kelas']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Akademik</div>
                     
@@ -230,7 +230,7 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru_piket', 'wali_kelas', 'guru_bk']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru_piket', 'wali_kelas', 'guru_bk']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Kedisiplinan</div>
                     
@@ -242,7 +242,7 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['guru_bk', 'super_admin']))
+                @if(auth()->user()?->hasAnyRole(['guru_bk', 'super_admin']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-rose-300 uppercase px-3 mb-2 tracking-wider flex items-center justify-between">
                         <span>Konseling BK</span>
@@ -257,7 +257,7 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'wali_kelas', 'guru', 'petugas_keagamaan']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'wali_kelas', 'guru', 'petugas_keagamaan']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Kegiatan Siswa</div>
                     
@@ -269,7 +269,7 @@
                 </div>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek']))
                 <div class="pt-4 pb-1">
                     <div class="text-[11px] font-semibold text-emerald-400/80 uppercase px-3 mb-2 tracking-wider">Sistem & Lembaga</div>
                     
@@ -286,11 +286,11 @@
             <div class="p-4 bg-emerald-950 border-t border-emerald-800/60 flex items-center justify-between">
                 <div class="flex items-center space-x-3 overflow-hidden">
                     <div class="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center font-bold text-xs text-white">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                        {{ strtoupper(substr(auth()->user()?->name ?? 'User', 0, 2)) }}
                     </div>
                     <div class="truncate">
-                        <div class="text-xs font-semibold text-white truncate">{{ auth()->user()->name }}</div>
-                        <div class="text-[10px] text-emerald-300 capitalize">{{ auth()->user()->roles->first()?->display_name ?? 'Pengguna' }}</div>
+                        <div class="text-xs font-semibold text-white truncate">{{ auth()->user()?->name ?? 'Pengguna' }}</div>
+                        <div class="text-[10px] text-emerald-300 capitalize">{{ auth()->user()?->roles?->first()?->display_name ?? 'Pengguna' }}</div>
                     </div>
                 </div>
                 <form action="{{ route('logout') }}" method="POST">
@@ -319,7 +319,7 @@
 
                 <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
                     <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                        {{ auth()->user()->roles->first()?->display_name ?? 'Pengguna' }}
+                        {{ auth()->user()?->roles?->first()?->display_name ?? 'Pengguna' }}
                     </span>
                     <div class="text-xs text-slate-500 hidden sm:block">
                         {{ now()->isoFormat('dddd, D MMMM Y') }}
@@ -373,7 +373,7 @@
                     <span class="text-[10px] mt-0.5">Beranda</span>
                 </a>
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru_piket', 'wali_kelas']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'guru_piket', 'wali_kelas']))
                 <a href="{{ route('attendance.index') }}" 
                    class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-center transition {{ request()->routeIs('attendance.*') ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-800' }}">
                     <svg class="w-5 h-5 {{ request()->routeIs('attendance.*') ? 'text-emerald-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
@@ -381,7 +381,7 @@
                 </a>
                 @endif
 
-                @if(auth()->user()->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru']))
+                @if(auth()->user()?->hasAnyRole(['super_admin', 'admin', 'kepsek', 'waka', 'petugas_keagamaan', 'wali_kelas', 'guru']))
                 <a href="{{ route('worship.sessions.index') }}" 
                    class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-center transition {{ request()->routeIs('worship.*') ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-800' }}">
                     <svg class="w-5 h-5 {{ request()->routeIs('worship.*') ? 'text-emerald-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -389,7 +389,7 @@
                 </a>
                 @endif
 
-                @if(auth()->user()->hasRole('orang_tua'))
+                @if(auth()->user()?->hasRole('orang_tua'))
                 <a href="{{ route('parent.messages') }}" 
                    class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-center transition {{ request()->routeIs('parent.messages*') ? 'text-emerald-700 font-bold' : 'text-slate-500 hover:text-slate-800' }}">
                     <svg class="w-5 h-5 {{ request()->routeIs('parent.messages*') ? 'text-emerald-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
