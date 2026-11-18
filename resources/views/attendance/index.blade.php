@@ -1,66 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-5">
     <!-- Header Action -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-            <h2 class="text-xl font-bold text-slate-900">Jurnal Presensi Harian Siswa</h2>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900">Jurnal Presensi Harian Siswa</h2>
             <p class="text-xs text-slate-500 mt-0.5">Pantau rekaman kehadiran gerbang masuk, keterlambatan, dan riwayat koreksi.</p>
         </div>
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2 shrink-0">
             <a href="{{ route('attendance.recap') }}" 
-               class="inline-flex items-center px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition">
-                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+               class="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition">
+                <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 Rekap Rombel
             </a>
             <a href="{{ route('attendance.sheet') }}" 
-               class="inline-flex items-center px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-md shadow-emerald-600/20 transition">
-                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                Lembar Absensi Rombel
+               class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-xs transition">
+                <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                Lembar Absensi
             </a>
         </div>
     </div>
 
     <!-- Quick Stat Cards Harian -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
-            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Presensi</span>
-            <div class="text-xl font-bold text-slate-900 mt-1">{{ $stats['total_recorded'] }}</div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
+        <div class="p-3 rounded-lg bg-white border border-slate-200/80 shadow-xs">
+            <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider block">Total Presensi</span>
+            <div class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 mt-0.5">{{ $stats['total_recorded'] }}</div>
         </div>
-        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 shadow-xs">
-            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Hadir Tepat</span>
-            <div class="text-xl font-bold text-emerald-700 mt-1">{{ $stats['present'] }}</div>
+        <div class="p-3 rounded-lg bg-emerald-50/70 border border-emerald-200/80 shadow-xs">
+            <span class="text-[10px] font-medium text-emerald-800 uppercase tracking-wider block">Hadir Tepat</span>
+            <div class="text-lg sm:text-xl font-bold tracking-tight text-emerald-700 mt-0.5">{{ $stats['present'] }}</div>
         </div>
-        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 shadow-xs">
-            <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Terlambat</span>
-            <div class="text-xl font-bold text-amber-700 mt-1">{{ $stats['late'] }}</div>
+        <div class="p-3 rounded-lg bg-amber-50/70 border border-amber-200/80 shadow-xs">
+            <span class="text-[10px] font-medium text-amber-800 uppercase tracking-wider block">Terlambat</span>
+            <div class="text-lg sm:text-xl font-bold tracking-tight text-amber-700 mt-0.5">{{ $stats['late'] }}</div>
         </div>
-        <div class="p-4 rounded-xl bg-blue-50 border border-blue-200 shadow-xs">
-            <span class="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">Sakit (S)</span>
-            <div class="text-xl font-bold text-blue-700 mt-1">{{ $stats['sick'] }}</div>
+        <div class="p-3 rounded-lg bg-blue-50/70 border border-blue-200/80 shadow-xs">
+            <span class="text-[10px] font-medium text-blue-800 uppercase tracking-wider block">Sakit (S)</span>
+            <div class="text-lg sm:text-xl font-bold tracking-tight text-blue-700 mt-0.5">{{ $stats['sick'] }}</div>
         </div>
-        <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 shadow-xs">
-            <span class="text-[10px] font-bold text-purple-800 uppercase tracking-wider block">Izin (I)</span>
-            <div class="text-xl font-bold text-purple-700 mt-1">{{ $stats['excused'] }}</div>
+        <div class="p-3 rounded-lg bg-purple-50/70 border border-purple-200/80 shadow-xs">
+            <span class="text-[10px] font-medium text-purple-800 uppercase tracking-wider block">Izin (I)</span>
+            <div class="text-lg sm:text-xl font-bold tracking-tight text-purple-700 mt-0.5">{{ $stats['excused'] }}</div>
         </div>
-        <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 shadow-xs">
-            <span class="text-[10px] font-bold text-rose-800 uppercase tracking-wider block">Alpa (A)</span>
-            <div class="text-xl font-bold text-rose-700 mt-1">{{ $stats['absent'] }}</div>
+        <div class="p-3 rounded-lg bg-rose-50/70 border border-rose-200/80 shadow-xs">
+            <span class="text-[10px] font-medium text-rose-800 uppercase tracking-wider block">Alpa (A)</span>
+            <div class="text-lg sm:text-xl font-bold tracking-tight text-rose-700 mt-0.5">{{ $stats['absent'] }}</div>
         </div>
     </div>
 
     <!-- Filter Bar -->
-    <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
-        <form method="GET" action="{{ route('attendance.index') }}" class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+    <div class="p-3.5 sm:p-4 rounded-xl bg-white border border-slate-200/80 shadow-xs">
+        <form method="GET" action="{{ route('attendance.index') }}" class="grid grid-cols-1 sm:grid-cols-5 gap-2.5">
             <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Tanggal</label>
+                <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Tanggal</label>
                 <input type="date" name="date" value="{{ $date }}" 
-                       class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                       class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:outline-none transition">
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Rombel / Kelas</label>
-                <select name="class_id" class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Rombel / Kelas</label>
+                <select name="class_id" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:outline-none transition">
                     <option value="">Semua Rombel</option>
                     @foreach($classes as $c)
                         <option value="{{ $c->id }}" {{ $classId == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
@@ -68,8 +68,8 @@
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Jenis Presensi</label>
-                <select name="type_id" class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Jenis Presensi</label>
+                <select name="type_id" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:outline-none transition">
                     <option value="">Semua Jenis</option>
                     @foreach($types as $t)
                         <option value="{{ $t->id }}" {{ $typeId == $t->id ? 'selected' : '' }}>{{ $t->name }}</option>
@@ -77,8 +77,8 @@
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Status Kehadiran</label>
-                <select name="status" class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Status Kehadiran</label>
+                <select name="status" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:outline-none transition">
                     <option value="">Semua Status</option>
                     <option value="present" {{ $status == 'present' ? 'selected' : '' }}>Hadir</option>
                     <option value="late" {{ $status == 'late' ? 'selected' : '' }}>Terlambat</option>
@@ -88,10 +88,10 @@
                 </select>
             </div>
             <div class="flex items-end space-x-2">
-                <button type="submit" class="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs transition">
+                <button type="submit" class="flex-1 py-1.5 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs transition">
                     Terapkan
                 </button>
-                <a href="{{ route('attendance.index') }}" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition">
+                <a href="{{ route('attendance.index') }}" class="py-1.5 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition">
                     Hari Ini
                 </a>
             </div>
@@ -99,18 +99,18 @@
     </div>
 
     <!-- Table Presensi -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+    <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full min-w-[650px] text-left text-xs text-slate-600">
-                <thead class="bg-slate-50 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+                <thead class="bg-slate-50 text-slate-700 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-200">
                     <tr>
-                        <th class="py-3 px-4">Siswa</th>
-                        <th class="py-3 px-4">Rombel</th>
-                        <th class="py-3 px-4">Sesi Presensi</th>
-                        <th class="py-3 px-4">Jam Masuk</th>
-                        <th class="py-3 px-4">Status</th>
-                        <th class="py-3 px-4">Petugas / Sumber</th>
-                        <th class="py-3 px-4 text-right">Koreksi</th>
+                        <th class="py-2.5 px-3">Siswa</th>
+                        <th class="py-2.5 px-3">Rombel</th>
+                        <th class="py-2.5 px-3">Sesi</th>
+                        <th class="py-2.5 px-3">Jam Masuk</th>
+                        <th class="py-2.5 px-3">Status</th>
+                        <th class="py-2.5 px-3">Petugas</th>
+                        <th class="py-2.5 px-3 text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">

@@ -10,19 +10,19 @@
 <body class="bg-slate-950 text-white min-h-screen flex flex-col font-sans antialiased overflow-x-hidden selection:bg-emerald-500 selection:text-white">
 
     <!-- Top Navigation / Presenter Controls -->
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-4">
+    <header class="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
             @if($schoolSetting->logo_url)
-                <img src="{{ $schoolSetting->logo_url }}" alt="Logo" class="w-10 h-10 object-contain rounded-xl bg-white p-1">
+                <img src="{{ $schoolSetting->logo_url }}" alt="Logo" class="w-9 h-9 object-contain rounded-lg bg-white p-1">
             @else
-                <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-500/20">
+                <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white shadow-xs">
                     {{ $schoolSetting->initials }}
                 </div>
             @endif
             <div>
-                <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                <h1 class="text-sm sm:text-base font-bold tracking-tight text-white flex items-center gap-2">
                     <span>{{ $session->type?->name }}</span>
-                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">
+                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800/80">
                         Gelombang {{ $session->wave_number }}
                     </span>
                 </h1>
@@ -32,38 +32,38 @@
             </div>
         </div>
 
-        <div class="flex items-center space-x-3">
-            <button id="fullscreenBtn" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-                <span>Layar Penuh (F11)</span>
+        <div class="flex items-center space-x-2.5">
+            <button id="fullscreenBtn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                <span>Layar Penuh</span>
             </button>
-            <a href="{{ route('worship.sessions.show', $session) }}" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl transition">
+            <a href="{{ route('worship.sessions.show', $session) }}" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium rounded-lg transition shadow-xs">
                 Kembali ke Sesi
             </a>
         </div>
     </header>
 
     <!-- Main Live Screen -->
-    <main class="flex-1 flex flex-col lg:flex-row items-center justify-center p-6 gap-8 max-w-7xl mx-auto w-full">
+    <main class="flex-1 flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 gap-6 max-w-7xl mx-auto w-full">
         <!-- Left: Huge Dynamic QR Code Display -->
         <div class="flex-1 flex flex-col items-center justify-center">
-            <div class="bg-white p-6 rounded-3xl shadow-2xl shadow-emerald-950/40 border-4 border-emerald-500/30 flex flex-col items-center max-w-md w-full">
+            <div class="bg-white p-5 sm:p-6 rounded-xl shadow-xl border border-slate-800 flex flex-col items-center max-w-md w-full">
                 <!-- QR Canvas -->
-                <div class="relative bg-white rounded-2xl p-2 flex items-center justify-center">
-                    <canvas id="qrCanvas" class="w-72 h-72 sm:w-80 sm:h-80 rounded-xl"></canvas>
+                <div class="relative bg-white rounded-lg p-2 flex items-center justify-center">
+                    <canvas id="qrCanvas" class="w-64 h-64 sm:w-72 sm:h-72 rounded-md"></canvas>
                 </div>
 
                 <!-- Expiry Progress Bar -->
-                <div class="w-full mt-4 space-y-2">
-                    <div class="flex items-center justify-between text-xs font-semibold text-slate-600">
-                        <span class="flex items-center gap-1.5 text-emerald-700">
+                <div class="w-full mt-3.5 space-y-1.5">
+                    <div class="flex items-center justify-between text-xs font-medium text-slate-600">
+                        <span class="flex items-center gap-1.5 text-emerald-700 font-semibold">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                             QR Dinamis Aktif
                         </span>
-                        <span id="countdownText" class="font-mono text-slate-800">30 detik</span>
+                        <span id="countdownText" class="font-mono text-slate-800 font-semibold">30 detik</span>
                     </div>
-                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                        <div id="countdownBar" class="bg-emerald-500 h-2.5 rounded-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div id="countdownBar" class="bg-emerald-500 h-2 rounded-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
                     </div>
                 </div>
 
@@ -75,43 +75,43 @@
         </div>
 
         <!-- Right: Live Attendance Statistics & Instructions -->
-        <div class="w-full lg:w-96 flex flex-col gap-5">
+        <div class="w-full lg:w-96 flex flex-col gap-4">
             <!-- Live Counter Card -->
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Kehadiran Terkini</span>
-                    <span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-300 font-semibold border border-emerald-800">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Kehadiran Terkini</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-300 font-medium border border-emerald-800/80">
                         Live Auto-Sync
                     </span>
                 </div>
 
                 <div>
                     <div class="flex items-baseline gap-2">
-                        <span id="presentCount" class="text-5xl font-extrabold text-white">0</span>
-                        <span class="text-xl text-slate-400">/ <span id="totalCount">{{ $session->participants()->count() }}</span> Siswa</span>
+                        <span id="presentCount" class="text-3xl sm:text-4xl font-bold text-white tracking-tight">0</span>
+                        <span class="text-xs text-slate-400">/ <span id="totalCount">{{ $session->participants()->count() }}</span> Siswa</span>
                     </div>
                     <span class="text-xs text-slate-400 mt-1 block">Telah melakukan scan masuk atau verifikasi</span>
                 </div>
 
                 <!-- Rate bar -->
                 <div class="space-y-1.5">
-                    <div class="flex justify-between text-xs text-slate-300 font-semibold">
-                        <span>Tingkat Partisipasi Rombel</span>
-                        <span id="rateText" class="text-emerald-400">0%</span>
+                    <div class="flex justify-between text-xs text-slate-300 font-medium">
+                        <span>Tingkat Partisipasi</span>
+                        <span id="rateText" class="text-emerald-400 font-mono">0%</span>
                     </div>
-                    <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-                        <div id="rateBar" class="bg-emerald-500 h-3 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                        <div id="rateBar" class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: 0%;"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Presenter Guidance Card -->
-            <div class="bg-slate-900/60 border border-slate-800/80 rounded-3xl p-6 text-xs text-slate-300 space-y-3">
-                <h4 class="font-bold text-sm text-white flex items-center gap-2">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 text-xs text-slate-300 space-y-3 shadow-lg">
+                <h4 class="font-semibold text-xs sm:text-sm text-white flex items-center gap-2">
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Panduan Petugas Keagamaan
                 </h4>
-                <ul class="space-y-2 text-slate-400">
+                <ul class="space-y-2 text-slate-400 text-xs">
                     <li class="flex items-start gap-2">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0"></span>
                         <span>Tampilkan halaman ini pada proyektor masjid sebelum azan berkumandang.</span>

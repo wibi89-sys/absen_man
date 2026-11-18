@@ -10,19 +10,19 @@
 <body class="bg-slate-950 text-white min-h-screen flex flex-col font-sans antialiased overflow-x-hidden selection:bg-emerald-500 selection:text-white">
 
     <!-- Top Navigation / Presenter Controls -->
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-4">
+    <header class="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
             @if($schoolSetting->logo_url)
-                <img src="{{ $schoolSetting->logo_url }}" alt="Logo" class="w-10 h-10 object-contain rounded-xl bg-white p-1">
+                <img src="{{ $schoolSetting->logo_url }}" alt="Logo" class="w-9 h-9 object-contain rounded-lg bg-white p-1">
             @else
-                <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-500/20">
+                <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white shadow-xs">
                     {{ $schoolSetting->initials }}
                 </div>
             @endif
             <div>
-                <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                <h1 class="text-sm sm:text-base font-bold tracking-tight text-white flex items-center gap-2">
                     <span>{{ $schoolSetting->school_name }}</span>
-                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">
+                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800/80">
                         QR Dinamis Gerbang
                     </span>
                 </h1>
@@ -32,42 +32,42 @@
             </div>
         </div>
 
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2.5">
             <!-- Digital Clock -->
-            <div class="px-4 py-2 bg-slate-800/90 rounded-xl border border-slate-700/80 text-emerald-400 font-mono font-bold text-sm tracking-widest hidden sm:block" id="digitalClock">
+            <div class="px-3 py-1.5 bg-slate-800 rounded-lg border border-slate-700/80 text-emerald-400 font-mono font-semibold text-xs tracking-wider hidden sm:block" id="digitalClock">
                 00:00:00 WIB
             </div>
 
-            <button id="fullscreenBtn" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-                <span>Layar Penuh (F11)</span>
+            <button id="fullscreenBtn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                <span>Layar Penuh</span>
             </button>
-            <a href="{{ route('attendance.gate-scanner') }}" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl transition">
-                Buka Pos Kiosk
+            <a href="{{ route('attendance.gate-scanner') }}" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium rounded-lg transition shadow-xs">
+                Pos Kiosk
             </a>
         </div>
     </header>
 
     <!-- Main Live Screen -->
-    <main class="flex-1 flex flex-col lg:flex-row items-center justify-center p-6 gap-8 max-w-7xl mx-auto w-full">
+    <main class="flex-1 flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 gap-6 max-w-7xl mx-auto w-full">
         <!-- Left: Huge Dynamic QR Code Display -->
         <div class="flex-1 flex flex-col items-center justify-center">
-            <div class="bg-white p-6 rounded-3xl shadow-2xl shadow-emerald-950/40 border-4 border-emerald-500/30 flex flex-col items-center max-w-md w-full">
+            <div class="bg-white p-5 sm:p-6 rounded-xl shadow-xl border border-slate-800 flex flex-col items-center max-w-md w-full">
                 <!-- QR Canvas -->
-                <div class="relative bg-white rounded-2xl p-2 flex items-center justify-center">
-                    <canvas id="qrCanvas" class="w-72 h-72 sm:w-80 sm:h-80 rounded-xl"></canvas>
+                <div class="relative bg-white rounded-lg p-2 flex items-center justify-center">
+                    <canvas id="qrCanvas" class="w-64 h-64 sm:w-72 sm:h-72 rounded-md"></canvas>
                 </div>
 
                 <!-- Expiry Progress Bar -->
-                <div class="w-full mt-4 space-y-2">
-                    <div class="flex items-center justify-between text-xs font-semibold text-slate-600">
-                        <span class="flex items-center gap-1.5 text-emerald-700">
+                <div class="w-full mt-3.5 space-y-1.5">
+                    <div class="flex items-center justify-between text-xs font-medium text-slate-600">
+                        <span class="flex items-center gap-1.5 text-emerald-700 font-semibold">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                             QR Dinamis Berputar
                         </span>
-                        <span id="countdownText" class="font-mono text-slate-800">25 detik</span>
+                        <span id="countdownText" class="font-mono text-slate-800 font-semibold">25 detik</span>
                     </div>
-                    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                    <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                         <div id="progressBar" class="bg-emerald-600 h-full w-full transition-all duration-300 ease-linear rounded-full"></div>
                     </div>
                 </div>
@@ -80,42 +80,41 @@
         </div>
 
         <!-- Right: Real-time Stats & Guidelines -->
-        <div class="w-full lg:w-96 flex flex-col gap-5">
+        <div class="w-full lg:w-96 flex flex-col gap-4">
             <!-- Counter Box -->
-            <div class="bg-gradient-to-br from-emerald-900 to-teal-950 p-6 rounded-3xl border border-emerald-800/60 shadow-xl relative overflow-hidden">
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-lg relative overflow-hidden">
                 <div class="relative z-10">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-emerald-300 block mb-1">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-emerald-400 block mb-1">
                         Siswa Masuk Hari Ini
                     </span>
                     <div class="flex items-baseline space-x-2">
-                        <span id="totalCheckedInCount" class="text-5xl font-black text-white tracking-tight">{{ $totalIn }}</span>
-                        <span class="text-sm font-semibold text-emerald-300">siswa hadir</span>
+                        <span id="totalCheckedInCount" class="text-3xl sm:text-4xl font-bold text-white tracking-tight">{{ $totalIn }}</span>
+                        <span class="text-xs font-medium text-slate-300">siswa hadir</span>
                     </div>
-                    <p class="text-xs text-emerald-200/80 mt-2">
+                    <p class="text-xs text-slate-400 mt-1.5">
                         Presensi masuk madrasah aktif &bull; Sesi: {{ $session->title }}
                     </p>
                 </div>
-                <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-emerald-600/10 rounded-full blur-xl"></div>
             </div>
 
             <!-- Attendance Info Instructions Card -->
-            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-6 space-y-4 shadow-lg">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3.5 shadow-lg">
+                <h3 class="text-xs sm:text-sm font-semibold text-white flex items-center gap-2">
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <span>Petunjuk Presensi Gerbang</span>
                 </h3>
 
-                <ul class="text-xs text-slate-300 space-y-2.5">
+                <ul class="text-xs text-slate-300 space-y-2">
                     <li class="flex items-start gap-2">
-                        <span class="w-5 h-5 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5 border border-emerald-800">1</span>
+                        <span class="w-4 h-4 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5 border border-emerald-800">1</span>
                         <span>Buka menu <strong>Scan QR Gerbang</strong> pada ponsel siswa.</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="w-5 h-5 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5 border border-emerald-800">2</span>
+                        <span class="w-4 h-4 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5 border border-emerald-800">2</span>
                         <span>Arahkan kamera ke layar ini hingga bunyi <em>beep</em> berhasil.</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="w-5 h-5 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5 border border-emerald-800">3</span>
+                        <span class="w-4 h-4 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5 border border-emerald-800">3</span>
                         <span>Bagi siswa tanpa ponsel, silakan tunjukkan <strong>Kartu OSIS</strong> ke meja pos piket di samping gerbang.</span>
                     </li>
                 </ul>

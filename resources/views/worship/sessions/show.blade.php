@@ -3,50 +3,50 @@
 @section('title', 'Detail Sesi Ibadah')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-5">
     <!-- Session Header Card -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6">
+    <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-4 sm:p-5">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div class="space-y-2">
-                <div class="flex items-center gap-3">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {{ $session->status_badge }}">
+            <div class="space-y-1.5">
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium {{ $session->status_badge }}">
                         {{ $session->status_label }}
                     </span>
-                    <span class="text-xs font-medium text-slate-500">
+                    <span class="text-[11px] font-medium text-slate-500">
                         Gelombang {{ $session->wave_number }} &bull; {{ $session->location?->name ?? 'Lokasi Sekolah' }}
                     </span>
                 </div>
-                <h1 class="text-2xl font-bold tracking-tight text-slate-900">{{ $session->type?->name }}</h1>
+                <h1 class="text-base sm:text-lg font-bold tracking-tight text-slate-900">{{ $session->type?->name }}</h1>
                 <p class="text-xs text-slate-500">
-                    Pelaksanaan: <strong class="text-slate-800">{{ $session->date->isoFormat('dddd, D MMMM Y') }}</strong> &bull;
-                    Dibuat oleh: <span class="text-slate-700 font-medium">{{ $session->creator?->name }}</span>
+                    Pelaksanaan: <strong class="text-slate-700 font-medium">{{ $session->date->isoFormat('dddd, D MMMM Y') }}</strong> &bull;
+                    Dibuat: <span class="text-slate-700">{{ $session->creator?->name }}</span>
                     @if($session->verified_by)
-                        &bull; Diverifikasi final oleh: <strong class="text-emerald-700">{{ $session->verifier?->name }}</strong> ({{ $session->verified_at?->format('H:i') }})
+                        &bull; Diverifikasi: <strong class="text-emerald-700 font-medium">{{ $session->verifier?->name }}</strong> ({{ $session->verified_at?->format('H:i') }})
                     @endif
                 </p>
                 @if($session->notes)
-                    <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-100 max-w-2xl">
+                    <p class="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-100 max-w-2xl">
                         <em>Catatan:</em> {{ $session->notes }}
                     </p>
                 @endif
             </div>
 
-            <div class="flex flex-wrap items-center gap-2.5">
-                <a href="{{ route('worship.sessions.display-qr', $session) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
-                    Buka Layar QR Proyektor
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <a href="{{ route('worship.sessions.display-qr', $session) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg shadow-2xs transition">
+                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                    Layar QR Proyektor
                 </a>
 
-                <a href="{{ route('worship.sessions.scan', $session) }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-xs transition">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <a href="{{ route('worship.sessions.scan', $session) }}" class="inline-flex items-center px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg shadow-2xs transition">
+                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     Scanner Kamera
                 </a>
 
                 @if($session->status !== 'verified' && auth()->user()->hasAnyRole(['super_admin', 'admin', 'petugas_keagamaan']))
                 <form method="POST" action="{{ route('worship.sessions.finalize', $session) }}" onsubmit="return confirm('Apakah Anda yakin ingin memfinalisasi sesi ini? Seluruh peserta yang belum scan/konfirmasi akan otomatis ditandai Tidak Hadir.')">
                     @csrf
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl shadow-xs transition">
-                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium rounded-lg shadow-2xs transition">
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         Finalisasi Sesi
                     </button>
                 </form>
@@ -55,44 +55,44 @@
         </div>
 
         <!-- Metrics Chips -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-3 mt-6 pt-6 border-t border-slate-100">
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
-                <span class="text-[11px] font-semibold text-slate-500 uppercase block">Total Peserta</span>
-                <span class="text-xl font-bold text-slate-900 mt-1 block">{{ $stats['total'] }}</span>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2.5 mt-4 pt-4 border-t border-slate-100">
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+                <span class="text-[10px] font-medium text-slate-500 uppercase block">Total Peserta</span>
+                <span class="text-base sm:text-lg font-bold text-slate-900 mt-0.5 block">{{ $stats['total'] }}</span>
             </div>
-            <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-center">
-                <span class="text-[11px] font-semibold text-emerald-700 uppercase block">Hadir</span>
-                <span class="text-xl font-bold text-emerald-800 mt-1 block">{{ $stats['present'] }}</span>
+            <div class="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-100 text-center">
+                <span class="text-[10px] font-medium text-emerald-700 uppercase block">Hadir</span>
+                <span class="text-base sm:text-lg font-bold text-emerald-800 mt-0.5 block">{{ $stats['present'] }}</span>
             </div>
-            <div class="bg-orange-50 p-3 rounded-xl border border-orange-100 text-center">
-                <span class="text-[11px] font-semibold text-orange-700 uppercase block">Masbuk</span>
-                <span class="text-xl font-bold text-orange-800 mt-1 block">{{ $stats['late'] }}</span>
+            <div class="bg-orange-50/70 p-2.5 rounded-lg border border-orange-100 text-center">
+                <span class="text-[10px] font-medium text-orange-700 uppercase block">Masbuk</span>
+                <span class="text-base sm:text-lg font-bold text-orange-800 mt-0.5 block">{{ $stats['late'] }}</span>
             </div>
-            <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 text-center">
-                <span class="text-[11px] font-semibold text-amber-700 uppercase block">Belum Scan</span>
-                <span class="text-xl font-bold text-amber-800 mt-1 block">{{ $stats['pending'] }}</span>
+            <div class="bg-amber-50/70 p-2.5 rounded-lg border border-amber-100 text-center">
+                <span class="text-[10px] font-medium text-amber-700 uppercase block">Belum Scan</span>
+                <span class="text-base sm:text-lg font-bold text-amber-800 mt-0.5 block">{{ $stats['pending'] }}</span>
             </div>
-            <div class="bg-purple-50 p-3 rounded-xl border border-purple-100 text-center">
-                <span class="text-[11px] font-semibold text-purple-700 uppercase block">Dispensasi</span>
-                <span class="text-xl font-bold text-purple-800 mt-1 block">{{ $stats['exempt'] }}</span>
+            <div class="bg-purple-50/70 p-2.5 rounded-lg border border-purple-100 text-center">
+                <span class="text-[10px] font-medium text-purple-700 uppercase block">Dispensasi</span>
+                <span class="text-base sm:text-lg font-bold text-purple-800 mt-0.5 block">{{ $stats['exempt'] }}</span>
             </div>
-            <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 text-center">
-                <span class="text-[11px] font-semibold text-blue-700 uppercase block">Izin</span>
-                <span class="text-xl font-bold text-blue-800 mt-1 block">{{ $stats['excused'] }}</span>
+            <div class="bg-blue-50/70 p-2.5 rounded-lg border border-blue-100 text-center">
+                <span class="text-[10px] font-medium text-blue-700 uppercase block">Izin</span>
+                <span class="text-base sm:text-lg font-bold text-blue-800 mt-0.5 block">{{ $stats['excused'] }}</span>
             </div>
-            <div class="bg-rose-50 p-3 rounded-xl border border-rose-100 text-center">
-                <span class="text-[11px] font-semibold text-rose-700 uppercase block">Tidak Hadir</span>
-                <span class="text-xl font-bold text-rose-800 mt-1 block">{{ $stats['absent'] }}</span>
+            <div class="bg-rose-50/70 p-2.5 rounded-lg border border-rose-100 text-center">
+                <span class="text-[10px] font-medium text-rose-700 uppercase block">Tidak Hadir</span>
+                <span class="text-base sm:text-lg font-bold text-rose-800 mt-0.5 block">{{ $stats['absent'] }}</span>
             </div>
         </div>
     </div>
 
     <!-- Filter & Search Bar -->
-    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-        <form method="GET" action="{{ route('worship.sessions.show', $session) }}" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+    <div class="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200/80 shadow-xs">
+        <form method="GET" action="{{ route('worship.sessions.show', $session) }}" class="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
             <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Filter Rombel</label>
-                <select name="class_id" class="w-full text-sm border-slate-300 rounded-lg px-3 py-2 border">
+                <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Filter Rombel</label>
+                <select name="class_id" class="w-full text-xs border-slate-300 rounded-lg px-2.5 py-1.5 border focus:ring-emerald-500/20 focus:border-emerald-600 transition">
                     <option value="">Semua Rombel Terjadwal</option>
                     @foreach($sessionClasses as $c)
                         <option value="{{ $c->id }}" {{ $classId == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
@@ -100,8 +100,8 @@
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Filter Status</label>
-                <select name="status" class="w-full text-sm border-slate-300 rounded-lg px-3 py-2 border">
+                <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Filter Status</label>
+                <select name="status" class="w-full text-xs border-slate-300 rounded-lg px-2.5 py-1.5 border focus:ring-emerald-500/20 focus:border-emerald-600 transition">
                     <option value="">Semua Status Peserta</option>
                     <option value="pending_verification" {{ $status == 'pending_verification' ? 'selected' : '' }}>Menunggu Verifikasi / Belum Scan</option>
                     <option value="present" {{ $status == 'present' ? 'selected' : '' }}>Hadir Berjamaah</option>
@@ -112,14 +112,14 @@
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Cari Nama / NIS</label>
-                <input type="text" name="search" value="{{ $search }}" placeholder="Ketik nama atau NIS..." class="w-full text-sm border-slate-300 rounded-lg px-3 py-2 border">
+                <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Cari Nama / NIS</label>
+                <input type="text" name="search" value="{{ $search }}" placeholder="Ketik nama atau NIS..." class="w-full text-xs border-slate-300 rounded-lg px-2.5 py-1.5 border focus:ring-emerald-500/20 focus:border-emerald-600 transition">
             </div>
             <div class="flex items-end gap-2">
-                <button type="submit" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold py-2 px-4 rounded-lg transition">
+                <button type="submit" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium py-1.5 px-3 rounded-lg transition">
                     Terapkan
                 </button>
-                <a href="{{ route('worship.sessions.show', $session) }}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium py-2 px-3 rounded-lg transition">
+                <a href="{{ route('worship.sessions.show', $session) }}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium py-1.5 px-3 rounded-lg transition">
                     Reset
                 </a>
             </div>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- Participants Table -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden" x-data="{
+    <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden" x-data="{
         selectedParticipants: [],
         selectAll: false,
         toggleAll() {
@@ -139,20 +139,20 @@
         }
     }">
         <!-- Bulk Action Header -->
-        <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <h3 class="text-sm font-bold text-slate-800">Daftar Peserta Terkunci (Denominator)</h3>
-                <span class="text-xs text-slate-500">({{ $participants->total() }} siswa ditemukan)</span>
+        <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <h3 class="text-xs sm:text-sm font-semibold text-slate-800">Daftar Peserta Terkunci (Denominator)</h3>
+                <span class="text-xs text-slate-500">({{ $participants->total() }} siswa)</span>
             </div>
 
             <!-- Bulk verification helper -->
             <form method="POST" action="{{ route('worship.sessions.verify', $session) }}" class="flex items-center gap-2" x-show="selectedParticipants.length > 0">
                 @csrf
-                <span class="text-xs text-slate-600 font-medium" x-text="`${selectedParticipants.length} siswa dipilih:`"></span>
+                <span class="text-xs text-slate-600 font-medium" x-text="`${selectedParticipants.length} dipilih:`"></span>
                 <template x-for="id in selectedParticipants" :key="id">
                     <input type="hidden" :name="`bulk_statuses[${id}]`" id="bulk-input" :value="$el.closest('form').querySelector('select[name=bulk_status]').value">
                 </template>
-                <select name="bulk_status" class="text-xs border-slate-300 rounded-lg px-2.5 py-1.5 border bg-white" @change="
+                <select name="bulk_status" class="text-xs border-slate-300 rounded-lg px-2 py-1 border bg-white" @change="
                     let val = $el.value;
                     document.querySelectorAll('input[id=bulk-input]').forEach(el => el.value = val);
                 ">
@@ -162,8 +162,8 @@
                     <option value="exempt">Tandai Dispensasi</option>
                     <option value="absent">Tandai Tidak Hadir</option>
                 </select>
-                <button type="submit" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition shadow-xs">
-                    Simpan Perubahan Terpilih
+                <button type="submit" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg transition shadow-xs">
+                    Simpan Terpilih
                 </button>
             </form>
         </div>
@@ -171,33 +171,90 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-                        <th class="py-3 px-4 w-10 text-center">
+                    <tr class="bg-slate-50 border-b border-slate-200 text-[10px] font-semibold text-slate-600 uppercase tracking-wider">
+                        <th class="py-2.5 px-3 w-8 text-center">
                             <input type="checkbox" x-model="selectAll" @change="toggleAll()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
                         </th>
-                        <th class="py-3 px-4">Nama Siswa</th>
-                        <th class="py-3 px-4">Rombel</th>
-                        <th class="py-3 px-4">Bukti Scan / Sumber</th>
-                        <th class="py-3 px-4">Status Verifikasi</th>
-                        <th class="py-3 px-4">Keterangan</th>
-                        <th class="py-3 px-4 text-right">Aksi Konfirmasi</th>
+                        <th class="py-2.5 px-3">Nama Siswa</th>
+                        <th class="py-2.5 px-3">Rombel</th>
+                        <th class="py-2.5 px-3">Bukti Scan / Sumber</th>
+                        <th class="py-2.5 px-3">Status Verifikasi</th>
+                        <th class="py-2.5 px-3">Keterangan</th>
+                        <th class="py-2.5 px-3 text-right">Aksi Konfirmasi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-xs">
                     @forelse($participants as $p)
                     <tr class="hover:bg-slate-50/80 transition">
-                        <td class="py-3 px-4 text-center">
+                        <td class="py-2.5 px-3 text-center">
                             <input type="checkbox" value="{{ $p->id }}" x-model="selectedParticipants" class="row-checkbox rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
                         </td>
-                        <td class="py-3 px-4">
-                            <div class="font-bold text-slate-900 text-sm">{{ $p->student->full_name }}</div>
-                            <div class="text-[11px] text-slate-500 font-mono">NIS: {{ $p->student->nis }}</div>
+                        <td class="py-2.5 px-3">
+                            <div class="font-semibold text-slate-900 text-xs sm:text-sm">{{ $p->student->full_name }}</div>
+                            <div class="text-[10px] text-slate-500 font-mono">NIS: {{ $p->student->nis }}</div>
                         </td>
-                        <td class="py-3 px-4 font-semibold text-slate-700">
+                        <td class="py-2.5 px-3 font-medium text-slate-700">
                             {{ $p->schoolClass?->name }}
                         </td>
-                        <td class="py-3 px-4">
+                        <td class="py-2.5 px-3">
                             @if($p->scanRecord)
+                                <div class="font-mono text-emerald-700 font-semibold">{{ $p->scanRecord->scanned_at->format('H:i:s') }} WIB</div>
+                                <div class="text-[10px] text-slate-400 uppercase tracking-wider">{{ $p->scanRecord->source_label }}</div>
+                            @else
+                                <span class="text-slate-400 italic">Belum scan</span>
+                            @endif
+                        </td>
+                        <td class="py-2.5 px-3">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium {{ $p->status_badge }}">
+                                {{ $p->status_label }}
+                            </span>
+                        </td>
+                        <td class="py-2.5 px-3 text-slate-500 text-[11px]">
+                            {{ $p->notes ?? '-' }}
+                        </td>
+                        <td class="py-2.5 px-3 text-right">
+                            <div class="inline-flex items-center gap-1" x-data="{ openMenu: false }">
+                                <form method="POST" action="{{ route('worship.sessions.verify-participant', ['session' => $session, 'participant' => $p]) }}" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="status" value="present">
+                                    <button type="submit" title="Tandai Hadir Berjamaah" class="p-1 rounded-md text-emerald-700 hover:bg-emerald-50 border border-emerald-200/60 transition">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('worship.sessions.verify-participant', ['session' => $session, 'participant' => $p]) }}" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="status" value="late">
+                                    <button type="submit" title="Tandai Masbuk / Terlambat" class="p-1 rounded-md text-orange-700 hover:bg-orange-50 border border-orange-200/60 transition">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('worship.sessions.verify-participant', ['session' => $session, 'participant' => $p]) }}" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="status" value="absent">
+                                    <button type="submit" title="Tandai Tidak Hadir" class="p-1 rounded-md text-rose-700 hover:bg-rose-50 border border-rose-200/60 transition">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="py-8 text-center text-slate-400">
+                            Tidak ada peserta yang cocok dengan kriteria filter.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-3 border-t border-slate-200">
+            {{ $participants->links() }}
+        </div>
+    </div>
+</div>
+@endsection
                                 <div class="flex items-center text-emerald-700 font-medium">
                                     <svg class="w-3.5 h-3.5 mr-1 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                     {{ $p->scanRecord->scanned_at->format('H:i:s') }}
