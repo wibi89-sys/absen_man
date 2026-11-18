@@ -198,7 +198,7 @@
                         </td>
                         <td class="py-2.5 px-3 text-center">
                             <div class="inline-flex items-center gap-1.5">
-                                <a href="{{ route('settings.database.download', $b['filename']) }}" 
+                                <a href="{{ route('settings.database.download', ['file' => $b['filename']]) }}" 
                                    class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[11px] transition shadow-2xs"
                                    title="Unduh ke komputer lokal">
                                     Unduh
@@ -208,9 +208,9 @@
                                         title="Kembalikan database ke kondisi berkas ini">
                                     Restore
                                 </button>
-                                <form action="{{ route('settings.database.delete', $b['filename']) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus arsip cadangan ini?')">
+                                <form action="{{ route('settings.database.delete') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus arsip cadangan ini?')">
                                     @csrf
-                                    @method('DELETE')
+                                    <input type="hidden" name="filename" value="{{ $b['filename'] }}">
                                     <button type="submit" class="px-2 py-1 rounded-md bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold text-[11px] transition" title="Hapus berkas cadangan">
                                         Hapus
                                     </button>

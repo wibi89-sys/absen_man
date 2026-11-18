@@ -60,9 +60,14 @@ class DatabaseMaintenanceController extends Controller
     /**
      * Download backup file.
      */
-    public function downloadBackup(string $filename): BinaryFileResponse
+    public function downloadBackup(Request $request, ?string $filename = null): BinaryFileResponse
     {
-        return $this->databaseService->downloadBackup($filename);
+        $file = $filename ?: $request->query('file') ?: $request->input('filename');
+        if (! $file) {
+            abort(404, 'File cadangan tidak ditemukan.');
+        }
+
+        return $this->databaseService->downloadBackup($file);
     }
 
     /**
@@ -114,10 +119,15 @@ class DatabaseMaintenanceController extends Controller
     /**
      * Delete a backup file.
      */
-    public function deleteBackup(string $filename): RedirectResponse
+    public function deleteBackup(Request $request, ?string $filename = null): RedirectResponse
     {
-        if ($this->databaseService->deleteBackup($filename)) {
-            return redirect()->route('settings.database.index')->with('success', "Berkas cadangan '{$filename}' berhasil dihapus.");
+        $file = $filename ?: $request->input('filename') ?: $request->query('file');
+        if (! $file) {
+            return redirect()->route('settings.database.index')->with('error', 'Nama berkas cadangan diperlukan.');
+        }
+
+        if ($this->databaseService->deleteBackup($file)) {
+            return redirect()->route('settings.database.index')->with('success', "Berkas cadangan '{$file}' berhasil dihapus.");
         }
 
         return redirect()->route('settings.database.index')->with('error', 'Berkas cadangan gagal dihapus atau tidak ditemukan.');

@@ -85,4 +85,26 @@ class DatabaseMaintenanceTest extends TestCase
         $this->artisan('db:backup', ['--description' => 'Artisan Test'])
             ->assertSuccessful();
     }
+
+    public function test_admin_can_delete_backup_via_post(): void
+    {
+        $service = app(DatabaseManagementService::class);
+        $backup = $service->backup('To Be Deleted');
+
+        $response = $this->actingAs($this->admin)->post(route('settings.database.delete'), [
+            'filename' => $backup['filename'],
+        ]);
+
+        $response->assertRedirect(route('settings.database.index'));
+        $response->assertSessionHas('success');
+    }
+
+    public function test_kepsek_can_access_database_maintenance(): void
+    {
+        $kepsek = User::where('username', 'kepsek')->first()
+            ?? User::factory()->create(['username' => 'kepsek', 'is_active' => true]);
+
+        $response = $this->actingAs($kepsek)->get(route('settings.database.index'));
+        $response->assertStatus(200);
+    }
 }

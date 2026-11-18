@@ -55,14 +55,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [SchoolSettingController::class, 'index'])->name('index');
         Route::put('/', [SchoolSettingController::class, 'update'])->name('update');
 
-        // Pemeliharaan Database (Backup, Restore, Reset) - Khusus super_admin dan admin
-        Route::middleware('role:super_admin,admin')->prefix('database')->name('database.')->group(function () {
+        // Pemeliharaan Database (Backup, Restore, Reset) - Khusus super_admin, admin, dan kepsek
+        Route::middleware('role:super_admin,admin,kepsek')->prefix('database')->name('database.')->group(function () {
             Route::get('/', [DatabaseMaintenanceController::class, 'index'])->name('index');
             Route::post('/backup', [DatabaseMaintenanceController::class, 'createBackup'])->name('backup');
-            Route::get('/download/{filename}', [DatabaseMaintenanceController::class, 'downloadBackup'])->name('download');
+            Route::get('/download', [DatabaseMaintenanceController::class, 'downloadBackup'])->name('download');
+            Route::get('/download/{filename}', [DatabaseMaintenanceController::class, 'downloadBackup'])->name('download.file');
             Route::post('/restore', [DatabaseMaintenanceController::class, 'restoreBackup'])->name('restore');
             Route::post('/upload-restore', [DatabaseMaintenanceController::class, 'uploadRestore'])->name('upload-restore');
-            Route::delete('/{filename}', [DatabaseMaintenanceController::class, 'deleteBackup'])->name('delete');
+            Route::post('/delete', [DatabaseMaintenanceController::class, 'deleteBackup'])->name('delete');
+            Route::delete('/{filename}', [DatabaseMaintenanceController::class, 'deleteBackup'])->name('delete.file');
             Route::post('/reset', [DatabaseMaintenanceController::class, 'resetDatabase'])->name('reset');
         });
     });
