@@ -245,7 +245,7 @@
                             </button>
                         </form>
 
-                        @if($schoolSetting->enable_demo_mode)
+                        @if($schoolSetting->enable_demo_mode || request()->has('demo'))
                         <!-- Modern Collapsible Demo Drawer -->
                         <div class="mt-5 pt-4 border-t border-slate-100">
                             <button type="button" @click="showDemo = !showDemo" 

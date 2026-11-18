@@ -28,7 +28,7 @@ class SchoolSettingFactory extends Factory
             'school_website' => 'https://absen.laksanatech.com',
             'logo_path' => null,
             'favicon_path' => null,
-            'enable_demo_mode' => true,
+            'enable_demo_mode' => false,
             'gate_welcome_text' => 'Selamat Datang di Madrasah Tercinta. Awali Hari dengan Senyum dan Semangat!',
         ];
     }

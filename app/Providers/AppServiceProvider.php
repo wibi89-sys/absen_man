@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
                     'school_name' => 'MADRASAH ONE',
                     'school_slogan' => 'Integrated Student Monitoring System',
                     'principal_name' => 'Dr. H. Ahmad Fauzi, M.Pd.',
-                    'enable_demo_mode' => true,
+                    'enable_demo_mode' => false,
                 ]));
             }
         });

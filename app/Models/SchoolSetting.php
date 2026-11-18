@@ -90,7 +90,7 @@ class SchoolSetting extends Model
                         $table->string('school_website')->nullable()->default('https://absen.laksanatech.com');
                         $table->string('logo_path')->nullable();
                         $table->string('favicon_path')->nullable();
-                        $table->boolean('enable_demo_mode')->default(true);
+                        $table->boolean('enable_demo_mode')->default(false);
                         $table->string('gate_welcome_text')->nullable()->default('Selamat Datang di Madrasah Tercinta. Awali Hari dengan Senyum dan Semangat!');
                         $table->timestamps();
                     });
@@ -137,7 +137,7 @@ class SchoolSetting extends Model
                             'school_phone' => '(022) 7891234',
                             'school_email' => 'info@madrasah-one.sch.id',
                             'school_website' => 'https://absen.laksanatech.com',
-                            'enable_demo_mode' => true,
+                            'enable_demo_mode' => false,
                             'gate_welcome_text' => 'Selamat Datang di Madrasah Tercinta. Awali Hari dengan Senyum dan Semangat!',
                         ]
                     );
@@ -161,7 +161,7 @@ class SchoolSetting extends Model
                 'school_phone' => '(022) 7891234',
                 'school_email' => 'info@madrasah-one.sch.id',
                 'school_website' => 'https://absen.laksanatech.com',
-                'enable_demo_mode' => true,
+                'enable_demo_mode' => false,
                 'gate_welcome_text' => 'Selamat Datang di Madrasah Tercinta. Awali Hari dengan Senyum dan Semangat!',
             ];
         });
