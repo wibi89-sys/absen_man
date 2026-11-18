@@ -21,6 +21,7 @@ use App\Http\Controllers\MasterData\TeacherController;
 use App\Http\Controllers\MasterData\UserController;
 use App\Http\Controllers\Parent\ParentPortalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Setting\DatabaseMaintenanceController;
 use App\Http\Controllers\Setting\SchoolSettingController;
 use App\Http\Controllers\Worship\WorshipExemptionController;
 use App\Http\Controllers\Worship\WorshipRecapController;
@@ -53,6 +54,17 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:super_admin,admin,kepsek')->prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SchoolSettingController::class, 'index'])->name('index');
         Route::put('/', [SchoolSettingController::class, 'update'])->name('update');
+
+        // Pemeliharaan Database (Backup, Restore, Reset) - Khusus super_admin dan admin
+        Route::middleware('role:super_admin,admin')->prefix('database')->name('database.')->group(function () {
+            Route::get('/', [DatabaseMaintenanceController::class, 'index'])->name('index');
+            Route::post('/backup', [DatabaseMaintenanceController::class, 'createBackup'])->name('backup');
+            Route::get('/download/{filename}', [DatabaseMaintenanceController::class, 'downloadBackup'])->name('download');
+            Route::post('/restore', [DatabaseMaintenanceController::class, 'restoreBackup'])->name('restore');
+            Route::post('/upload-restore', [DatabaseMaintenanceController::class, 'uploadRestore'])->name('upload-restore');
+            Route::delete('/{filename}', [DatabaseMaintenanceController::class, 'deleteBackup'])->name('delete');
+            Route::post('/reset', [DatabaseMaintenanceController::class, 'resetDatabase'])->name('reset');
+        });
     });
 
     // Master Data Routes (Admin, Super Admin, Kepsek, Waka)

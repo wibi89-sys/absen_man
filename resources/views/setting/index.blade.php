@@ -16,6 +16,19 @@
         </div>
     </div>
 
+    <!-- Navigation Tabs -->
+    <div class="flex border-b border-slate-200 gap-6 text-xs sm:text-sm font-semibold">
+        <a href="{{ route('settings.index') }}" class="pb-3 text-emerald-700 border-b-2 border-emerald-600 flex items-center gap-1.5">
+            Identitas Lembaga & Profil
+        </a>
+        @if(auth()->user()->hasAnyRole(['super_admin', 'admin']))
+        <a href="{{ route('settings.database.index') }}" class="pb-3 text-slate-500 hover:text-slate-800 border-b-2 border-transparent transition flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+            <span>Database & Cadangan Data</span>
+        </a>
+        @endif
+    </div>
+
     <!-- Main Settings Form -->
     <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5"
           x-data="{
