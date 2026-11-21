@@ -34,11 +34,25 @@
           x-data="{
               logoPreview: '{{ $setting->logo_url }}',
               deleteLogo: false,
+              faviconPreview: '{{ $setting->favicon_url }}',
+              deleteFavicon: false,
+              autoConvertFavicon: true,
               handleLogoChange(e) {
                   const file = e.target.files[0];
                   if (file) {
                       this.deleteLogo = false;
                       this.logoPreview = URL.createObjectURL(file);
+                      if (this.autoConvertFavicon) {
+                          this.deleteFavicon = false;
+                          this.faviconPreview = this.logoPreview;
+                      }
+                  }
+              },
+              handleFaviconChange(e) {
+                  const file = e.target.files[0];
+                  if (file) {
+                      this.deleteFavicon = false;
+                      this.faviconPreview = URL.createObjectURL(file);
                   }
               }
           }">
@@ -47,7 +61,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
             
-            <!-- Left Column: Branding & Logo -->
+            <!-- Left Column: Branding, Favicon & Kiosk -->
             <div class="space-y-5 lg:col-span-1">
                 <!-- Logo & Visual Identity Card -->
                 <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-4 sm:p-5 space-y-4">
@@ -95,6 +109,20 @@
                         </div>
                     </div>
 
+                    <!-- Auto-convert Logo to Favicon Option -->
+                    <div class="pt-3 border-t border-slate-100">
+                        <label class="flex items-start gap-2.5 cursor-pointer">
+                            <input type="checkbox" name="auto_convert_favicon" value="1" x-model="autoConvertFavicon"
+                                   class="mt-0.5 w-4 h-4 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-800 block">Otomatis Konversi Logo Menjadi Favicon</span>
+                                <span class="text-[11px] text-slate-500 leading-relaxed block mt-0.5">
+                                    Saat menyimpan, sistem otomatis memotong proporsional & merender logo menjadi favicon browser (16x16, 32x32, 64x64).
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+
                     <!-- Mode Pengujian / Akun Demo Setting -->
                     <div class="pt-3 border-t border-slate-100">
                         <label class="flex items-start gap-2.5 cursor-pointer">
@@ -110,6 +138,78 @@
                     </div>
                 </div>
 
+                <!-- Favicon & Tab Browser Preview Card -->
+                <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-4 sm:p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xs font-semibold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                                Favicon Browser (Ikon Tab)
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Ikon resmi madrasah pada tab browser dan bookmark.</p>
+                        </div>
+                        @if($setting->has_custom_favicon)
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">Kustom / Logo</span>
+                        @else
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 shrink-0">Default SVG</span>
+                        @endif
+                    </div>
+
+                    <!-- Live Simulated Browser Tab Header -->
+                    <div class="rounded-lg border border-slate-200 bg-slate-100/70 p-2.5">
+                        <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                            <span>Simulasi Tab Browser</span>
+                            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-100/70 px-1.5 py-0.5 rounded">Live Preview</span>
+                        </div>
+                        <div class="bg-slate-200/80 rounded-md p-1.5 flex items-center gap-2">
+                            <div class="bg-white rounded px-2.5 py-1.5 flex items-center gap-2 shadow-2xs max-w-full text-slate-800 text-[11px] font-medium border border-slate-200 min-w-0">
+                                <img :src="faviconPreview" alt="Favicon Preview" class="w-4 h-4 object-contain rounded-xs shrink-0">
+                                <span class="truncate font-semibold text-slate-700 text-[11px] max-w-[140px]">{{ $setting->school_name }}</span>
+                                <span class="text-slate-400 hover:text-slate-600 cursor-default text-xs ml-1 shrink-0">×</span>
+                            </div>
+                            <span class="text-slate-400 text-xs px-1 font-bold shrink-0">+</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Box: Quick Convert Existing Logo & Manual Custom Favicon -->
+                    <div class="space-y-3 pt-1">
+                        @if($setting->logo_url)
+                            <div class="flex items-center justify-between p-2.5 bg-emerald-50/70 border border-emerald-200/60 rounded-lg gap-2">
+                                <div class="min-w-0">
+                                    <span class="text-xs font-semibold text-emerald-950 block truncate">Logo madrasah terpasang</span>
+                                    <span class="text-[10px] text-emerald-700 block truncate">Konversi logo yang ada menjadi favicon</span>
+                                </div>
+                                <button type="submit" formaction="{{ route('settings.convert-favicon') }}" formmethod="POST"
+                                        class="shrink-0 px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold rounded-md shadow-2xs transition">
+                                    Konversi Sekarang
+                                </button>
+                            </div>
+                        @endif
+
+                        <!-- Upload Custom Favicon Box -->
+                        <div class="p-3 border border-slate-200 rounded-lg bg-slate-50/50 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-semibold text-slate-700">Unggah Favicon Khusus</span>
+                                <template x-if="!deleteFavicon && (faviconPreview.includes('favicon_') || faviconPreview.includes('settings/'))">
+                                    <button type="button" @click="deleteFavicon = true; faviconPreview = '{{ asset('favicon.svg') }}'; $refs.faviconInput.value = ''"
+                                            class="text-[10px] text-rose-600 hover:text-rose-700 font-semibold underline">
+                                        Reset ke Default
+                                    </button>
+                                </template>
+                            </div>
+                            <input type="hidden" name="delete_favicon" :value="deleteFavicon ? '1' : '0'">
+                            <label class="block cursor-pointer">
+                                <span class="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition w-full">
+                                    <svg class="w-3.5 h-3.5 mr-1.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                    Pilih File Favicon Khusus (Opsional)
+                                </span>
+                                <input type="file" name="favicon" x-ref="faviconInput" @change="handleFaviconChange" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon,.ico" class="hidden">
+                            </label>
+                            <p class="text-[10px] text-slate-400 text-center">Digunakan jika logo sekolah berbentuk horizontal/landscape.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Teks Sambutan Kiosk -->
                 <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-4 sm:p-5 space-y-3">
                     <h3 class="text-xs font-semibold text-slate-900 uppercase tracking-wider flex items-center gap-2">
@@ -119,8 +219,8 @@
                     <div>
                         <label for="gate_welcome_text" class="block text-xs font-semibold text-slate-700 mb-1">Teks di Layar Presensi Kiosk</label>
                         <input type="text" id="gate_welcome_text" name="gate_welcome_text" value="{{ old('gate_welcome_text', $setting->gate_welcome_text) }}"
-                               placeholder="Contoh: Selamat Datang di Madrasah..."
-                               class="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-800 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:outline-none transition">
+                                placeholder="Contoh: Selamat Datang di Madrasah..."
+                                class="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-800 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:outline-none transition">
                     </div>
                 </div>
             </div>

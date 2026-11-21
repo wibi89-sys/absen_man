@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:super_admin,admin,kepsek')->prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SchoolSettingController::class, 'index'])->name('index');
         Route::put('/', [SchoolSettingController::class, 'update'])->name('update');
+        Route::post('/convert-favicon', [SchoolSettingController::class, 'convertLogoToFavicon'])->name('convert-favicon');
 
         // Pemeliharaan Database (Backup, Restore, Reset) - Khusus super_admin, admin, dan kepsek
         Route::middleware('role:super_admin,admin,kepsek')->prefix('database')->name('database.')->group(function () {

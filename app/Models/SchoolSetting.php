@@ -214,16 +214,28 @@ class SchoolSetting extends Model
     {
         try {
             if ($this->favicon_path && Storage::disk('public')->exists($this->favicon_path)) {
-                return asset('storage/'.$this->favicon_path);
+                return asset('storage/'.$this->favicon_path).'?v='.($this->updated_at?->timestamp ?? time());
             }
             if ($this->logo_path && Storage::disk('public')->exists($this->logo_path)) {
-                return asset('storage/'.$this->logo_path);
+                return asset('storage/'.$this->logo_path).'?v='.($this->updated_at?->timestamp ?? time());
             }
         } catch (\Throwable) {
             // Fallback
         }
 
         return asset('favicon.svg');
+    }
+
+    /**
+     * Determine if a custom or converted favicon exists.
+     */
+    public function getHasCustomFaviconAttribute(): bool
+    {
+        try {
+            return ! empty($this->favicon_path) && Storage::disk('public')->exists($this->favicon_path);
+        } catch (\Throwable) {
+            return false;
+        }
     }
 
     /**

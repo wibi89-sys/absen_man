@@ -101,6 +101,82 @@ class SchoolSettingTest extends TestCase
         $setting = SchoolSetting::current();
         $this->assertNotNull($setting->logo_path);
         Storage::disk('public')->assertExists($setting->logo_path);
+        // Also auto-converted to favicon
+        $this->assertNotNull($setting->favicon_path);
+        Storage::disk('public')->assertExists($setting->favicon_path);
+    }
+
+    public function test_admin_can_upload_custom_favicon(): void
+    {
+        Storage::fake('public');
+
+        $favFile = UploadedFile::fake()->image('custom_fav.png', 64, 64);
+
+        $payload = [
+            'school_name' => 'MAN 2 KOTA JAKARTA',
+            'school_level' => 'Madrasah Aliyah (MA)',
+            'principal_name' => 'Drs. H. Sudirman, M.Pd.',
+            'favicon' => $favFile,
+        ];
+
+        $response = $this->actingAs($this->admin)->put(route('settings.update'), $payload);
+
+        $response->assertRedirect(route('settings.index'));
+
+        $setting = SchoolSetting::current();
+        $this->assertNotNull($setting->favicon_path);
+        Storage::disk('public')->assertExists($setting->favicon_path);
+    }
+
+    public function test_admin_can_convert_existing_logo_to_favicon(): void
+    {
+        Storage::fake('public');
+
+        // Create a dummy logo directly in storage
+        $logoFile = UploadedFile::fake()->image('existing_logo.png', 120, 120);
+        $logoPath = $logoFile->store('settings', 'public');
+
+        SchoolSetting::current()->update([
+            'logo_path' => $logoPath,
+            'favicon_path' => null,
+        ]);
+        SchoolSetting::clearCache();
+
+        $response = $this->actingAs($this->admin)->post(route('settings.convert-favicon'));
+
+        $response->assertRedirect(route('settings.index'));
+        $response->assertSessionHas('success');
+
+        $setting = SchoolSetting::current();
+        $this->assertNotNull($setting->favicon_path);
+        Storage::disk('public')->assertExists($setting->favicon_path);
+    }
+
+    public function test_admin_can_reset_custom_favicon_to_default(): void
+    {
+        Storage::fake('public');
+
+        $favPath = 'settings/favicons/favicon_test.png';
+        Storage::disk('public')->put($favPath, 'dummy');
+
+        SchoolSetting::current()->update([
+            'favicon_path' => $favPath,
+        ]);
+        SchoolSetting::clearCache();
+
+        $payload = [
+            'school_name' => 'MAN 2 KOTA JAKARTA',
+            'school_level' => 'Madrasah Aliyah (MA)',
+            'principal_name' => 'Drs. H. Sudirman, M.Pd.',
+            'delete_favicon' => '1',
+        ];
+
+        $response = $this->actingAs($this->admin)->put(route('settings.update'), $payload);
+
+        $response->assertRedirect(route('settings.index'));
+
+        $setting = SchoolSetting::current();
+        $this->assertNull($setting->favicon_path);
     }
 
     public function test_login_page_renders_dynamic_school_settings(): void
