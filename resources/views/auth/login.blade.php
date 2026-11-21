@@ -2,7 +2,7 @@
 <html lang="id" class="h-full bg-slate-50">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk - {{ $schoolSetting->school_name ?? config('app.name', 'MADRASAH ONE') }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,11 +36,11 @@
           }
       }">
 
-    <!-- HERO SECTION WITH VIBRANT INSTITUTIONAL GRADIENT (SULTAN BANTEN PORTAL STYLE) -->
-    <section class="relative bg-gradient-to-br from-emerald-950 via-teal-900 to-slate-950 text-white overflow-hidden min-h-[92vh] lg:min-h-screen flex flex-col justify-between">
+    <!-- HERO SECTION (SPLIT SCREEN ON DESKTOP, COMPACT & CENTERED ON MOBILE) -->
+    <section class="relative bg-gradient-to-br from-emerald-950 via-teal-900 to-slate-950 text-white overflow-hidden flex-1 flex flex-col justify-between py-0">
         
-        <!-- Ambient Atmospheric Light Circles -->
-        <div class="pointer-events-none absolute inset-0 overflow-hidden">
+        <!-- Ambient Atmospheric Light Circles (Desktop only to save mobile GPU/battery) -->
+        <div class="pointer-events-none absolute inset-0 overflow-hidden hidden sm:block">
             <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-emerald-500/15 blur-3xl"></div>
             <div class="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-teal-400/10 blur-3xl"></div>
             <div class="absolute -bottom-24 left-1/3 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
@@ -48,71 +48,87 @@
             <div class="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.04]"></div>
         </div>
 
-        <!-- TOP HEADER NAVBAR -->
-        <header class="relative z-10 w-full border-b border-white/10 backdrop-blur-xs bg-slate-950/20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center justify-between">
+        <!-- TOP HEADER NAVBAR (COMPACT & CLEAN) -->
+        <header class="relative z-10 w-full border-b border-white/10 backdrop-blur-xs bg-slate-950/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
                 <!-- Brand Identity -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white p-1.5 shadow-md flex items-center justify-center shrink-0 border border-white/20">
+                <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-white p-1.5 shadow-md flex items-center justify-center shrink-0 border border-white/20">
                         @if($schoolSetting->logo_url)
                             <img src="{{ $schoolSetting->logo_url }}" alt="{{ $schoolSetting->school_name }}" class="w-full h-full object-contain">
                         @else
-                            <div class="w-full h-full rounded-lg bg-emerald-600 text-white font-bold text-sm sm:text-base flex items-center justify-center">
+                            <div class="w-full h-full rounded-lg bg-emerald-600 text-white font-bold text-xs sm:text-base flex items-center justify-center">
                                 {{ $schoolSetting->initials }}
                             </div>
                         @endif
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <div class="flex items-center gap-2">
-                            <span class="font-bold text-sm sm:text-base text-white tracking-tight">MADRASAH ONE</span>
+                            <span class="font-bold text-xs sm:text-base text-white tracking-tight truncate">MADRASAH ONE</span>
                             <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
                                 {{ $schoolSetting->school_level ?? 'Madrasah' }}
                             </span>
                         </div>
-                        <p class="text-[11px] sm:text-xs text-slate-300 font-medium truncate max-w-[200px] sm:max-w-md">
+                        <p class="text-[10px] sm:text-xs text-slate-300 font-medium truncate max-w-[170px] sm:max-w-md">
                             {{ $schoolSetting->school_name }}
                         </p>
                     </div>
                 </div>
 
                 <!-- Top Right Status / Help -->
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-center gap-2 shrink-0">
                     <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs text-emerald-300 font-medium">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         <span>Sistem Online</span>
                     </div>
                     @if($schoolSetting->school_phone)
                     <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $schoolSetting->school_phone) }}" target="_blank"
-                       class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium text-xs transition flex items-center gap-1.5 backdrop-blur-sm shadow-2xs">
+                       class="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium text-xs transition flex items-center gap-1.5 backdrop-blur-sm shadow-2xs">
                         <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                        <span>Bantuan Login</span>
+                        <span class="hidden sm:inline">Bantuan Login</span>
+                        <span class="sm:hidden text-[11px]">Bantuan</span>
                     </a>
                     @endif
                 </div>
             </div>
         </header>
 
-        <!-- HERO MAIN CONTENT: SPLIT SCREEN (HERO INFO ON LEFT, AUTH CARD ON RIGHT) -->
-        <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 flex-1 flex flex-col justify-center">
+        <!-- MAIN CONTAINER -->
+        <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-5 sm:py-10 lg:py-14 flex-1 flex flex-col justify-center">
+            
+            <!-- Mobile Brand Banner (Visible ONLY on mobile screens < lg) -->
+            <div class="lg:hidden text-center mb-4">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/20 text-[11px] text-emerald-200 font-medium mb-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Portal Resmi Madrasah</span>
+                </div>
+                <h1 class="text-base sm:text-xl font-bold text-white tracking-tight leading-snug">
+                    {{ $schoolSetting->school_name }}
+                </h1>
+                <p class="text-[11px] text-emerald-100/80 font-medium mt-0.5 max-w-xs mx-auto truncate">
+                    {{ $schoolSetting->school_slogan ?? 'Sistem Informasi Presensi & Monitoring Siswa' }}
+                </p>
+            </div>
+
             <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 
-                <!-- LEFT COLUMN: SULTAN BANTEN STYLE HERO PITCH & VALUE PROPOSITION -->
-                <div class="lg:col-span-7 text-center lg:text-left">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs text-emerald-200 font-medium mb-4 shadow-2xs">
+                <!-- LEFT COLUMN: SULTAN BANTEN STYLE HERO PITCH (DESKTOP ONLY: HIDDEN ON MOBILE < lg) -->
+                <div class="hidden lg:block lg:col-span-7 text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs text-emerald-200 font-medium mb-4 shadow-2xs">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                         <span>Portal Monitoring Presensi & Ibadah Terpadu</span>
                     </div>
 
-                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight mb-3">
+                    <h1 class="text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight mb-3">
                         {{ $schoolSetting->school_name }}
                     </h1>
 
-                    <p class="text-emerald-100/90 text-sm sm:text-base font-medium max-w-xl mx-auto lg:mx-0 mb-6 leading-relaxed">
+                    <p class="text-emerald-100/90 text-sm sm:text-base font-medium max-w-xl mb-6 leading-relaxed">
                         {{ $schoolSetting->school_slogan ?? 'Sistem Informasi Presensi & Monitoring Siswa' }}
                     </p>
 
-                    <!-- Feature Badges with Frosted Glass -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 max-w-2xl mx-auto lg:mx-0">
+                    <!-- Feature Badges with Frosted Glass (Desktop Only) -->
+                    <div class="grid grid-cols-3 gap-3 mb-8 max-w-2xl">
                         <div class="p-3.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-left transition hover:bg-white/15">
                             <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center mb-2.5">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
@@ -138,7 +154,7 @@
                         </div>
                     </div>
 
-                    <div class="hidden lg:flex items-center gap-6 text-xs text-slate-300 pt-3 border-t border-white/10">
+                    <div class="flex items-center gap-6 text-xs text-slate-300 pt-3 border-t border-white/10">
                         <div class="flex items-center gap-2">
                             <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                             <span>11 Role Terverifikasi</span>
@@ -154,18 +170,18 @@
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: SULTAN BANTEN STYLE ELEVATED AUTHENTICATION CARD -->
+                <!-- RIGHT COLUMN: THE AUTHENTICATION CARD (PROMINENT, NO-CLUTTER ON MOBILE) -->
                 <div class="lg:col-span-5 w-full max-w-md mx-auto">
-                    <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/40 text-slate-800 relative transition-all">
+                    <div class="bg-white rounded-2xl shadow-xl sm:shadow-2xl p-5 sm:p-7 border border-white/40 text-slate-800 relative transition-all">
                         
                         <!-- Header inside card -->
-                        <div class="text-center sm:text-left mb-6 pb-4 border-b border-slate-100 flex items-center justify-between">
+                        <div class="mb-5 pb-3.5 border-b border-slate-100 flex items-center justify-between">
                             <div>
-                                <h2 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">Masuk ke Sistem</h2>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">Masuk ke Sistem</h2>
                                 <p class="text-xs text-slate-500 mt-0.5">Silakan masuk menggunakan kredensial Anda</p>
                             </div>
-                            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
                             </div>
                         </div>
 
@@ -189,11 +205,11 @@
                         @endif
 
                         <!-- FORM -->
-                        <form action="{{ route('login') }}" method="POST" class="space-y-4">
+                        <form action="{{ route('login') }}" method="POST" class="space-y-3.5 sm:space-y-4">
                             @csrf
 
                             <div>
-                                <label for="login" class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                <label for="login" class="block text-xs font-semibold text-slate-700 mb-1">
                                     Identitas Pengguna
                                 </label>
                                 <div class="relative">
@@ -202,12 +218,12 @@
                                     </div>
                                     <input type="text" id="login" name="login" value="{{ old('login') }}" required autofocus
                                            placeholder="Username, NIS, NIP, atau Email"
-                                           class="w-full pl-10 pr-3.5 py-3 rounded-xl border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm transition bg-white shadow-2xs">
+                                           class="w-full pl-10 pr-3.5 py-2.5 sm:py-3 rounded-xl border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-xs sm:text-sm transition bg-white shadow-2xs">
                                 </div>
                             </div>
 
                             <div>
-                                <label for="password" class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                <label for="password" class="block text-xs font-semibold text-slate-700 mb-1">
                                     Kata Sandi
                                 </label>
                                 <div class="relative">
@@ -216,7 +232,7 @@
                                     </div>
                                     <input :type="showPassword ? 'text' : 'password'" id="password" name="password" required
                                            placeholder="Masukkan kata sandi..."
-                                           class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm transition bg-white shadow-2xs">
+                                           class="w-full pl-10 pr-10 py-2.5 sm:py-3 rounded-xl border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-xs sm:text-sm transition bg-white shadow-2xs">
                                     <button type="button" @click="showPassword = !showPassword" 
                                             class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition"
                                             tabindex="-1">
@@ -226,30 +242,30 @@
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between text-xs pt-1">
+                            <div class="flex items-center justify-between text-xs pt-0.5">
                                 <label class="flex items-center space-x-2 cursor-pointer select-none">
                                     <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
-                                    <span class="text-slate-600 font-medium">Ingat Sesi Saya</span>
+                                    <span class="text-slate-600 font-medium text-xs">Ingat Sesi Saya</span>
                                 </label>
                                 @if($schoolSetting->school_phone)
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $schoolSetting->school_phone) }}" target="_blank" class="text-emerald-700 hover:text-emerald-800 font-semibold hover:underline">
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $schoolSetting->school_phone) }}" target="_blank" class="text-emerald-700 hover:text-emerald-800 font-semibold hover:underline text-xs">
                                     Lupa Sandi?
                                 </a>
                                 @endif
                             </div>
 
                             <button type="submit" 
-                                    class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-[0.99]">
+                                    class="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-[0.99]">
                                 <span>Masuk ke Sistem</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </button>
                         </form>
 
                         @if($schoolSetting->enable_demo_mode || request()->has('demo'))
-                        <!-- Modern Collapsible Demo Drawer -->
-                        <div class="mt-5 pt-4 border-t border-slate-100">
+                        <!-- Modern Collapsible Demo Drawer (Tester Only) -->
+                        <div class="mt-4 pt-3.5 border-t border-slate-100">
                             <button type="button" @click="showDemo = !showDemo" 
-                                    class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition border border-slate-200">
+                                    class="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition border border-slate-200">
                                 <span class="flex items-center gap-2">
                                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
                                     <span>Akun Uji Coba (Tester / Demo)</span>
@@ -257,10 +273,10 @@
                                 <svg class="w-4 h-4 transition-transform duration-200" :class="showDemo ? 'rotate-180 text-emerald-600' : 'text-slate-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
 
-                            <div x-show="showDemo" x-cloak class="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
-                                <div class="text-[11px] text-slate-500 flex items-center justify-between">
+                            <div x-show="showDemo" x-cloak class="mt-2 p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="text-[10px] text-slate-500 flex items-center justify-between">
                                     <span>Pilih akun peran untuk auto-fill:</span>
-                                    <span class="font-mono text-[10px] text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md font-semibold">password123</span>
+                                    <span class="font-mono text-[10px] text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-md font-semibold">password123</span>
                                 </div>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
                                     <button type="button" @click="fill('superadmin')" class="px-2 py-1.5 text-[11px] rounded-lg bg-white border border-slate-200 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-900 font-medium text-slate-700 transition truncate shadow-2xs">Super Admin</button>
@@ -283,11 +299,11 @@
             </div>
         </div>
 
-        <div class="h-4 sm:h-6"></div>
+        <div class="h-2 sm:h-4"></div>
     </section>
 
-    <!-- 3 FEATURES HIGHLIGHT SECTION (SULTAN BANTEN STYLE UNDER HERO) -->
-    <section class="py-12 sm:py-16 bg-slate-50 border-t border-slate-200/80">
+    <!-- 3 FEATURES HIGHLIGHT SECTION (DESKTOP ONLY: HIDDEN ON MOBILE < lg) -->
+    <section class="hidden lg:block py-12 sm:py-16 bg-slate-50 border-t border-slate-200/80">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
             <div class="text-center max-w-2xl mx-auto mb-10">
                 <span class="text-emerald-700 font-semibold text-xs uppercase tracking-wider bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60 inline-block mb-2">
@@ -338,20 +354,20 @@
         </div>
     </section>
 
-    <!-- FOOTER INSTITUSIONAL -->
-    <footer class="bg-white border-t border-slate-200 py-6 sm:py-8 text-xs text-slate-500">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-xs shrink-0">
+    <!-- FOOTER INSTITUSIONAL (COMPACT & CLEAN ON MOBILE) -->
+    <footer class="bg-white border-t border-slate-200 py-3.5 sm:py-5 text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
+            <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center shadow-xs shrink-0">
                     MO
                 </div>
                 <div>
-                    <p class="font-bold text-slate-800 text-xs sm:text-sm">{{ $schoolSetting->school_name }}</p>
-                    <p class="text-[11px] text-slate-400">MADRASAH ONE &bull; Integrated Student Monitoring System</p>
+                    <p class="font-bold text-slate-800 text-xs truncate max-w-[220px] sm:max-w-none">{{ $schoolSetting->school_name }}</p>
+                    <p class="text-[10px] text-slate-400 hidden sm:block">MADRASAH ONE &bull; Integrated Student Monitoring System</p>
                 </div>
             </div>
-            <div class="text-center sm:text-right text-[11px] text-slate-400">
-                <p>&copy; {{ date('Y') }} {{ $schoolSetting->school_name }}. Hak Cipta Dilindungi Undang-Undang.</p>
+            <div class="text-center sm:text-right text-[10px] sm:text-[11px] text-slate-400">
+                <p>&copy; {{ date('Y') }} {{ $schoolSetting->school_name }}. Hak Cipta Dilindungi.</p>
             </div>
         </div>
     </footer>
