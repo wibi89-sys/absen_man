@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+    <defs>
+        <linearGradient id="m1Bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#059669"/>
+            <stop offset="100%" stop-color="#047857"/>
+        </linearGradient>
+        <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fde047"/>
+            <stop offset="100%" stop-color="#d97706"/>
+        </linearGradient>
+    </defs>
+    <!-- Institutional Squircle Background -->
+    <rect width="64" height="64" rx="16" fill="url(#m1Bg)"/>
+    <rect x="2" y="2" width="60" height="60" rx="14" stroke="white" stroke-opacity="0.25" stroke-width="2"/>
+
+    <!-- Islamic Dome / Mihrab Arch -->
+    <path d="M32 9 C24 15, 17 23, 17 33 H47 C47 23, 40 15, 32 9 Z" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+
+    <!-- Star of Knowledge (8-point star / octagram) -->
+    <g transform="translate(32, 19) scale(0.75)" fill="url(#goldAccent)">
+        <polygon points="0,-6 1.8,-1.8 6,0 1.8,1.8 0,6 -1.8,1.8 -6,0 -1.8,-1.8"/>
+        <polygon points="0,-6 1.8,-1.8 6,0 1.8,1.8 0,6 -1.8,1.8 -6,0 -1.8,-1.8" transform="rotate(45)"/>
+    </g>
+
+    <!-- Open Book of Wisdom / Qur'an Motif -->
+    <path d="M32 37 C26 33.5, 17 34.5, 13 37.5 V48 C17 45, 26 44, 32 47.5 C38 44, 47 45, 51 48 V37.5 C47 34.5, 38 33.5, 32 37 Z" fill="#ffffff"/>
+    <path d="M32 37 V47.5" stroke="#047857" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -7,6 +7,11 @@
 
     <title>{{ $title ?? 'Dashboard' }} - {{ $schoolSetting->school_name ?? config('app.name', 'MADRASAH ONE') }}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ $schoolSetting->favicon_url }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ $schoolSetting->favicon_url }}">
+
     <!-- Google Font Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

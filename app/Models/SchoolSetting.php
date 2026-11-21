@@ -208,6 +208,25 @@ class SchoolSetting extends Model
     }
 
     /**
+     * Get URL for the favicon or fallback to school logo or default vector favicon.
+     */
+    public function getFaviconUrlAttribute(): string
+    {
+        try {
+            if ($this->favicon_path && Storage::disk('public')->exists($this->favicon_path)) {
+                return asset('storage/'.$this->favicon_path);
+            }
+            if ($this->logo_path && Storage::disk('public')->exists($this->logo_path)) {
+                return asset('storage/'.$this->logo_path);
+            }
+        } catch (\Throwable) {
+            // Fallback
+        }
+
+        return asset('favicon.svg');
+    }
+
+    /**
      * Get initials of the school name (e.g. "M1" or "MAN1").
      */
     public function getInitialsAttribute(): string
