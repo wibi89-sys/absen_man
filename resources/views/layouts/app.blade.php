@@ -372,6 +372,11 @@
                     {{ $slot ?? '' }}
                     @yield('content')
                 </div>
+
+                <!-- Footer -->
+                <footer class="py-4 text-center text-xs text-slate-400 border-t border-slate-200/60 pb-20 md:pb-4">
+                    &copy; {{ date('Y') }} Laksana Solution
+                </footer>
             </main>
 
             <!-- Mobile Bottom Navigation Bar (Modern Compact 56px) -->

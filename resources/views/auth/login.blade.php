@@ -359,21 +359,10 @@
         </div>
     </section>
 
-    <!-- FOOTER INSTITUSIONAL (COMPACT & CLEAN ON MOBILE) -->
-    <footer class="bg-white border-t border-slate-200 py-3.5 sm:py-5 text-xs text-slate-500">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
-            <div class="flex items-center gap-2.5">
-                <div class="w-6 h-6 rounded-md bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center shadow-xs shrink-0">
-                    MO
-                </div>
-                <div>
-                    <p class="font-bold text-slate-800 text-xs truncate max-w-[220px] sm:max-w-none">{{ $schoolSetting->school_name }}</p>
-                    <p class="text-[10px] text-slate-400 hidden sm:block">MADRASAH ONE &bull; Integrated Student Monitoring System</p>
-                </div>
-            </div>
-            <div class="text-center sm:text-right text-[10px] sm:text-[11px] text-slate-400">
-                <p>&copy; {{ date('Y') }} {{ $schoolSetting->school_name }}. Hak Cipta Dilindungi.</p>
-            </div>
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <p class="text-xs sm:text-sm text-slate-500 font-medium">&copy; {{ date('Y') }} Laksana Solution</p>
         </div>
     </footer>
 </body>
